@@ -26,8 +26,8 @@ ActiveRecord::Migration.verbose = false
 # 测试的时候需要修改这个地方
 ::CarrierWave.configure do |config|
   config.storage             = :qiniu
-  config.qiniu_access_key    = "fR8TmveK4Eon_9te76mGyLKyC7I0JFwqBr6tVFdp"
-  config.qiniu_secret_key    = 'OhEs7BQAGMxoktRHvv1aNrxvosoM4C44cF6pmaMp'
+  config.qiniu_access_key    = "your qiniu access_key"
+  config.qiniu_secret_key    = 'your qiniu secret_key'
   config.qiniu_bucket        = "spec-test"
   config.qiniu_bucket_domain = "carrierwave-qiniu-example.aspxboy.com"
 end
