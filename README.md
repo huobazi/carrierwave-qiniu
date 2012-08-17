@@ -32,7 +32,7 @@ You'll need to configure it in config/initializes/carrierwave.rb
 end
 ```
 
-for more information on `qiniu_bucket_domain`, please read http://docs.qiniutek.com/v2/sdk/ruby/#publish
+For more information on `qiniu_bucket_domain`, please read http://docs.qiniutek.com/v2/sdk/ruby/#publish
 
 And then in your uploader, set the storage to `:qiniu`:
 
@@ -52,7 +52,7 @@ class AvatarUploader < CarrierWave::Uploader::Base
   self.qiniu_bucket_domain = "avatars.files.example.com"
 end
 ```
-You can see a example project on: https://github.com/huobazi/carrierwave-qiniu-example or see the spec test on http://xxxxxxxxxxx
+You can see a example project on: https://github.com/huobazi/carrierwave-qiniu-example or see the spec test on https://github.com/huobazi/carrierwave-qiniu/blob/master/spec/upload_spec.rb
 
 ## Contributing
 
