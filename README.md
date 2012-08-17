@@ -1,6 +1,6 @@
 # Carrierwave::Qiniu
 
-storage [Carrierwave](https://github.com/jnicklas/carrierwave) attachments to http://qiniutek.com
+This gem adds storage support for [Qiniu](http://qiniutek.com) to [Carrierwave](https://github.com/jnicklas/carrierwave)
 
 example: https://github.com/huobazi/carrierwave-qiniu-example
 
