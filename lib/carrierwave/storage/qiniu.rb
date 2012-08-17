@@ -11,9 +11,6 @@ rescue LoadError
   raise "You dot't have the 'qiniu-rs' gem installed"
 end
 
-# Qiniu::RS.establish_connection! :access_key => 'fR8TmveK4Eon_9te76mGyLKyC7I0JFwqBr6tVFdp',
-#                                 :secret_key => 'OhEs7BQAGMxoktRHvv1aNrxvosoM4C44cF6pmaMp'
-
 module CarrierWave
   module Storage
     class Qiniu < Abstract
