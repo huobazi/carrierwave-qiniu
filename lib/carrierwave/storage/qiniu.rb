@@ -25,25 +25,40 @@ module CarrierWave
         
         def store(file, key)
           init       
-          remote_upload_url = ::Qiniu::RS.put_auth
+
+          # API v2
+          # remote_upload_url = ::Qiniu::RS.put_auth
+          # opts = {
+          #   :url            => remote_upload_url,
+          #   :file               => file.path,
+          #   :key                => key,
+          #   :bucket             => @qiniu_bucket,
+          #   :mime_type          => file.content_type,
+          #   :enable_crc32_check => true
+          # }        
+
+          # ::Qiniu::RS.upload opts
+
+          token_opts = {
+            :scope => @qiniu_bucket, :expires_in => 3600 # https://github.com/qiniu/ruby-sdk/pull/15
+          }
+          uptoken = ::Qiniu::RS.generate_upload_token(token_opts)
           opts = {
-            :url                => remote_upload_url,
-            :file               => file.path,
-            :key                => key,
-            :bucket             => @qiniu_bucket,
-            :mime_type          => file.content_type,
-            :enable_crc32_check => true
-          }        
+                      :uptoken            => uptoken,
+                      :file               => file.path,
+                      :key                => key,
+                      :bucket             => @qiniu_bucket,
+                      :mime_type          => file.content_type,
+                      :enable_crc32_check => true
+                    }  
 
-          ::Qiniu::RS.upload opts
-
+          ::Qiniu::RS.upload_file opts
         end
 
         def delete(key)
           init
           begin            
             Qiniu::RS.delete(@qiniu_bucket, key)
-            true
           rescue Exception => e
             nil
           end
