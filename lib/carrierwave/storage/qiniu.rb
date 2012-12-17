@@ -94,7 +94,7 @@ module CarrierWave
 
         def url
           if @uploader.qiniu_bucket_domain and @uploader.qiniu_bucket_domain.size > 0
-            "http://#{@uploader.qiniu_bucket_domain}/#{key}"
+            "http://#{@uploader.qiniu_bucket_domain}/#{@path}"
           else
             qiniu_connection.get_public_url(@path)               
           end
