@@ -21,6 +21,7 @@ module CarrierWave
           @qiniu_bucket = options[:qiniu_bucket]
           @qiniu_access_key = options[:qiniu_access_key]
           @qiniu_secret_key = options[:qiniu_secret_key]
+          @qiniu_block_size = options[:qiniu_block_size] || 1024*1024*4
           init
         end
         
@@ -71,7 +72,8 @@ module CarrierWave
         def init_qiniu_rs_connection          
           return if @qiniu_rs_connection_inited
           ::Qiniu::RS.establish_connection! :access_key => @qiniu_access_key,
-                                            :secret_key => @qiniu_secret_key
+                                            :secret_key => @qiniu_secret_key,
+                                            :block_size => @qiniu_block_size
           
           @qiniu_rs_connection_inited = true
         end
@@ -118,7 +120,8 @@ module CarrierWave
                 :qiniu_access_key    => @uploader.qiniu_access_key,
                 :qiniu_secret_key    => @uploader.qiniu_secret_key,
                 :qiniu_bucket        => @uploader.qiniu_bucket,
-                :qiniu_bucket_domain => @uploader.qiniu_bucket_domain
+                :qiniu_bucket_domain => @uploader.qiniu_bucket_domain,
+                :qiniu_block_size    => @uploader.qiniu_block_size
             }
             @qiniu_connection ||= Connection.new config
           end
