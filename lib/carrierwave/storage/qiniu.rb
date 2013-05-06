@@ -43,7 +43,7 @@ module CarrierWave
 
         def delete(key)
           begin            
-            Qiniu::RS.delete(@qiniu_bucket, key)
+            ::Qiniu::RS.delete(@qiniu_bucket, key)
           rescue Exception => e
             nil
           end
