@@ -21,6 +21,8 @@ module CarrierWave
           @qiniu_bucket = options[:qiniu_bucket]
           @qiniu_access_key = options[:qiniu_access_key]
           @qiniu_secret_key = options[:qiniu_secret_key]
+          @qiniu_block_size = options[:qiniu_block_size] || 1024*1024*4
+          @qiniu_protocal = options[:qiniu_protocal] || "http"
           init
         end
         
@@ -43,7 +45,7 @@ module CarrierWave
 
         def delete(key)
           begin            
-            Qiniu::RS.delete(@qiniu_bucket, key)
+            ::Qiniu::RS.delete(@qiniu_bucket, key)
           rescue Exception => e
             nil
           end
@@ -51,7 +53,7 @@ module CarrierWave
 
         def get_public_url(key)
           if @qiniu_bucket_domain and @qiniu_bucket_domain.size > 0
-            "http://#{@qiniu_bucket_domain}/#{key}"            
+            "#{@qiniu_protocal}://#{@qiniu_bucket_domain}/#{key}"            
           else
             res = ::Qiniu::RS.get(@qiniu_bucket, key)
             if res
@@ -71,7 +73,8 @@ module CarrierWave
         def init_qiniu_rs_connection          
           return if @qiniu_rs_connection_inited
           ::Qiniu::RS.establish_connection! :access_key => @qiniu_access_key,
-                                            :secret_key => @qiniu_secret_key
+                                            :secret_key => @qiniu_secret_key,
+                                            :block_size => @qiniu_block_size
           
           @qiniu_rs_connection_inited = true
         end
@@ -94,7 +97,7 @@ module CarrierWave
 
         def url
           if @uploader.qiniu_bucket_domain and @uploader.qiniu_bucket_domain.size > 0
-            "http://#{@uploader.qiniu_bucket_domain}/#{@path}"
+            "#{@uploader.qiniu_protocal}://#{@uploader.qiniu_bucket_domain}/#{@path}"
           else
             qiniu_connection.get_public_url(@path)               
           end
@@ -118,7 +121,9 @@ module CarrierWave
                 :qiniu_access_key    => @uploader.qiniu_access_key,
                 :qiniu_secret_key    => @uploader.qiniu_secret_key,
                 :qiniu_bucket        => @uploader.qiniu_bucket,
-                :qiniu_bucket_domain => @uploader.qiniu_bucket_domain
+                :qiniu_bucket_domain => @uploader.qiniu_bucket_domain,
+                :qiniu_block_size    => @uploader.qiniu_block_size,
+                :qiniu_protocal => @uploader.qiniu_protocal
             }
             @qiniu_connection ||= Connection.new config
           end
