@@ -123,7 +123,7 @@ module CarrierWave
                 :qiniu_bucket        => @uploader.qiniu_bucket,
                 :qiniu_bucket_domain => @uploader.qiniu_bucket_domain,
                 :qiniu_block_size    => @uploader.qiniu_block_size,
-                :qiniu_protocal => @uploader.qiniu_protocal
+                :qiniu_protocal      => @uploader.qiniu_protocal
             }
             @qiniu_connection ||= Connection.new config
           end
