@@ -9,7 +9,9 @@ module CarrierWave
         add_config :qiniu_bucket
         add_config :qiniu_access_key
         add_config :qiniu_secret_key
-      end      
+        add_config :qiniu_block_size
+        add_config :qiniu_protocal
+      end
     end
 
     module ClassMethods
