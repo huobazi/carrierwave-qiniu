@@ -1,6 +1,6 @@
 # encoding: utf-8
 module Carrierwave
   module Qiniu
-    VERSION = "0.0.5"
+    VERSION = "0.0.6"
   end
 end

@@ -25,7 +25,7 @@ module CarrierWave
           @qiniu_protocal = options[:qiniu_protocal] || "http"
           init
         end
-        
+
         def store(file, key)
           token_opts = {
             :scope => @qiniu_bucket, :expires_in => 3600 # https://github.com/qiniu/ruby-sdk/pull/15
@@ -53,14 +53,14 @@ module CarrierWave
 
         def get_public_url(key)
           if @qiniu_bucket_domain and @qiniu_bucket_domain.size > 0
-            "#{@qiniu_protocal}://#{@qiniu_bucket_domain}/#{key}"            
+            "#{@qiniu_protocal}://#{@qiniu_bucket_domain}/#{key}"
           else
             res = ::Qiniu::RS.get(@qiniu_bucket, key)
             if res
               res["url"]
             else
               nil
-            end             
+            end
           end
         end
 
@@ -70,17 +70,17 @@ module CarrierWave
           setup_publish_bucket_and_domain
         end
 
-        def init_qiniu_rs_connection          
+        def init_qiniu_rs_connection
           return if @qiniu_rs_connection_inited
           ::Qiniu::RS.establish_connection! :access_key => @qiniu_access_key,
                                             :secret_key => @qiniu_secret_key,
                                             :block_size => @qiniu_block_size
-          
+
           @qiniu_rs_connection_inited = true
         end
 
         def setup_publish_bucket_and_domain
-          ::Qiniu::RS.publish(@qiniu_bucket_domain, @qiniu_bucket)        
+          ::Qiniu::RS.publish(@qiniu_bucket_domain, @qiniu_bucket)
         end
 
       end
@@ -97,9 +97,9 @@ module CarrierWave
 
         def url
           if @uploader.qiniu_bucket_domain and @uploader.qiniu_bucket_domain.size > 0
-            "#{@uploader.qiniu_protocal}://#{@uploader.qiniu_bucket_domain}/#{@path}"
+            "#{@uploader.qiniu_protocal || 'http'}://#{@uploader.qiniu_bucket_domain}/#{@path}"
           else
-            qiniu_connection.get_public_url(@path)               
+            qiniu_connection.get_public_url(@path)
           end
         end
 
