@@ -56,10 +56,6 @@ end
 ```
 You can see a example project on: https://github.com/huobazi/carrierwave-qiniu-example or see the spec test on https://github.com/huobazi/carrierwave-qiniu/blob/master/spec/upload_spec.rb
 
-## Contributors
-
-https://github.com/huobazi/carrierwave-qiniu/graphs/contributors
-
 ## Contributing
 
 1. Fork it
@@ -68,9 +64,7 @@ https://github.com/huobazi/carrierwave-qiniu/graphs/contributors
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
 
+## Contributors
 
-## CHANGELOG
+See the [Contributors List](https://github.com/huobazi/carrierwave-qiniu/graphs/contributors).
 
-### 0.0.1 (2012-08-17)
-
-* it works.
