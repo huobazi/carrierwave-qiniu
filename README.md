@@ -56,6 +56,10 @@ end
 ```
 You can see a example project on: https://github.com/huobazi/carrierwave-qiniu-example or see the spec test on https://github.com/huobazi/carrierwave-qiniu/blob/master/spec/upload_spec.rb
 
+## Contributors
+
+https://github.com/huobazi/carrierwave-qiniu/graphs/contributors
+
 ## Contributing
 
 1. Fork it
