@@ -6,7 +6,7 @@ require "open-uri"
 
 ActiveRecord::Base.establish_connection(:adapter => 'sqlite3', :database => ':memory:')
 
-describe "Upload" do
+describe "CarrierWave Qiniu" do
   def setup_db
     ActiveRecord::Schema.define(:version => 1) do
       create_table :photos do |t|
@@ -14,27 +14,34 @@ describe "Upload" do
       end
     end
   end
-  
+
   def drop_db
     ActiveRecord::Base.connection.tables.each do |table|
       ActiveRecord::Base.connection.drop_table(table)
     end
   end
-  
-  class PhotoUploader < CarrierWave::Uploader::Base
-    include CarrierWave::MiniMagick
 
-    version :small do
-      process :resize_to_fill => [100, 100]
-    end
-    
+  class PhotoUploader < CarrierWave::Uploader::Base
+
     def store_dir
-      "photos"
+      "carrierwave-qiniu-spec"
     end
 
     def filename
       "images/#{secure_token(10)}.#{file.extension}" if original_filename.present?
     end
+
+    # See
+    # http://docs.qiniu.com/api/put.html#uploadToken
+    # http://docs.qiniutek.com/v3/api/io/#uploadToken-asyncOps
+    def qiniu_async_ops
+      commands = []
+      %W(small little middle large).each do |style|
+        commands << "http://#{self.qiniu_bucket_domain}/#{self.store_dir}/#{self.filename}/#{style}"
+      end
+      commands
+    end
+
 
     protected
     def secure_token(length = 16)
@@ -44,32 +51,43 @@ describe "Upload" do
   end
 
   class Photo < ActiveRecord::Base
+
+    %W(small little middle large).each do |style|
+      define_method("#{style}_image_url".to_sym){ self.image.url.to_s + "/#{style}" }
+    end
+
     mount_uploader :image, PhotoUploader
   end
-  
-  
+
+
   before :all do
     setup_db
   end
-  
+
   after :all do
     drop_db
   end
-  
+
   context "Upload Image" do
     it "does upload image" do
-      f = load_file("ruby-china.png")
+      f = load_file("mm.jpg")
       photo = Photo.new(:image => f)
       photo.save
+
       photo.errors.count.should == 0
-      open(photo.image.url).should_not == nil
-      open(photo.image.url).size.should == f.size
-      open(photo.image.small.url).should_not == nil
+
+      open(photo.small_image_url).should_not == nil
+      open(photo.little_image_url).should_not == nil
+      open(photo.middle_image_url).should_not == nil
+      open(photo.large_image_url).should_not == nil
+
       puts ""
       puts 'The image was uploaded to:'
       puts ""
-      puts photo.image.url
-      puts photo.image.small.url
+      puts photo.small_image_url
+      puts photo.little_image_url
+      puts photo.middle_image_url
+      puts photo.large_image_url
     end
   end
 end

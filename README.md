@@ -52,6 +52,18 @@ class AvatarUploader < CarrierWave::Uploader::Base
 
   self.qiniu_bucket = "avatars"
   self.qiniu_bucket_domain = "avatars.files.example.com"
+
+    # See also:
+    # http://docs.qiniu.com/api/put.html#uploadToken
+    # http://docs.qiniutek.com/v3/api/io/#uploadToken-asyncOps
+    def qiniu_async_ops
+      commands = []
+      %W(small little middle large).each do |style|
+        commands << "http://#{self.qiniu_bucket_domain}/#{self.store_dir}/#{self.filename}/#{style}"
+      end
+      commands
+    end
+
 end
 ```
 You can see a example project on: https://github.com/huobazi/carrierwave-qiniu-example or see the spec test on https://github.com/huobazi/carrierwave-qiniu/blob/master/spec/upload_spec.rb
