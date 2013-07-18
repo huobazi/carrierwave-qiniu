@@ -33,8 +33,6 @@ module CarrierWave
           }
           token_opts.merge!(:async_options => @qiniu_async_ops) if @qiniu_async_ops.size > 0
 
-          puts token_opts.to_s
-
           uptoken = ::Qiniu::RS.generate_upload_token(token_opts)
 
           opts = {
@@ -135,11 +133,9 @@ module CarrierWave
 
             if @uploader.respond_to?(:qiniu_async_ops) and !@uploader.qiniu_async_ops.nil? and @uploader.qiniu_async_ops.size > 0
               if @uploader.qiniu_async_ops.is_a?(Array)
-                puts @uploader.qiniu_async_ops.join(';')
                 config.merge!(:qiniu_async_ops => @uploader.qiniu_async_ops.join(';'))
               else
                 config.merge!(:qiniu_async_ops => @uploader.qiniu_async_ops)
-                puts @uploader.qiniu_async_ops
               end
             end
 
