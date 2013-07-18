@@ -54,6 +54,7 @@ class AvatarUploader < CarrierWave::Uploader::Base
   self.qiniu_bucket_domain = "avatars.files.example.com"
 
     # See also:
+    # https://github.com/qiniu/ruby-sdk/issues/48
     # http://docs.qiniu.com/api/put.html#uploadToken
     # http://docs.qiniutek.com/v3/api/io/#uploadToken-asyncOps
     def qiniu_async_ops
