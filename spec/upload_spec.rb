@@ -32,6 +32,7 @@ describe "CarrierWave Qiniu" do
     end
 
     # See
+    # https://github.com/qiniu/ruby-sdk/issues/48
     # http://docs.qiniu.com/api/put.html#uploadToken
     # http://docs.qiniutek.com/v3/api/io/#uploadToken-asyncOps
     def qiniu_async_ops
