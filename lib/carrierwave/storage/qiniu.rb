@@ -1,16 +1,5 @@
 # encoding: utf-8
 
-begin
-  require 'carrierwave'
-rescue LoadError
-  raise "You dot't have the 'carrierwave' gem installed"
-end
-begin
-  require 'qiniu-rs'
-rescue LoadError
-  raise "You dot't have the 'qiniu-rs' gem installed"
-end
-
 module CarrierWave
   module Storage
     class Qiniu < Abstract
