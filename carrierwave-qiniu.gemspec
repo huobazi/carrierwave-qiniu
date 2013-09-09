@@ -16,6 +16,6 @@ Gem::Specification.new do |gem|
   gem.version       = Carrierwave::Qiniu::VERSION
 
 
-  gem.add_development_dependency "carrierwave"
-  gem.add_development_dependency "qiniu-rs",["~> 3.4.2"]
+  gem.add_dependency "carrierwave"
+  gem.add_dependency "qiniu-rs",["~> 3.4.2"]
 end
