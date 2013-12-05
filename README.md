@@ -30,7 +30,7 @@ You'll need to configure it in config/initializes/carrierwave.rb
   config.qiniu_bucket        = "carrierwave-qiniu-example"
   config.qiniu_bucket_domain = "carrierwave-qiniu-example.aspxboy.com"
   config.qiniu_block_size    = 4*1024*1024
-  config.qiniu_protocal      = "http"
+  config.qiniu_protocol      = "http"
 end
 ```
 

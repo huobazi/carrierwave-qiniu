@@ -10,6 +10,7 @@ module CarrierWave
         add_config :qiniu_access_key
         add_config :qiniu_secret_key
         add_config :qiniu_block_size
+        add_config :qiniu_protocol
         add_config :qiniu_protocal
       end
     end
