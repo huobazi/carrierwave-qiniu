@@ -15,12 +15,15 @@ module CarrierWave
           @qiniu_block_size    = options[:qiniu_block_size] || 1024*1024*4
           @qiniu_protocol      = options[:qiniu_protocol] || options[:qiniu_protocal] || "http"
           @qiniu_async_ops     = options[:qiniu_async_ops] || ''
+          @qiniu_can_overwrite = options[:qiniu_can_overwrite] || false
           init
         end
 
         def store(file, key)
+          qiniu_upload_scope = @qiniu_bucket
+          qiniu_upload_scope = @qiniu_bucket + ':' + key if @qiniu_can_overwrite
           token_opts = {
-            :scope => @qiniu_bucket, :expires_in => 3600 # https://github.com/qiniu/ruby-sdk/pull/15
+            :scope => qiniu_upload_scope, :expires_in => 3600 # https://github.com/qiniu/ruby-sdk/pull/15
           }
           token_opts.merge!(:async_options => @qiniu_async_ops) if @qiniu_async_ops.size > 0
 
@@ -127,6 +130,14 @@ module CarrierWave
                 config.merge!(:qiniu_async_ops => @uploader.qiniu_async_ops.join(';'))
               else
                 config.merge!(:qiniu_async_ops => @uploader.qiniu_async_ops)
+              end
+            end
+
+            if @uploader.respond_to?(:qiniu_can_overwrite) and !@uploader.qiniu_can_overwrite.nil?
+              if @uploader.qiniu_can_overwrite.is_a?(TrueClass) or @uploader.is_a?(FalseClass)
+                config.merge!(:qiniu_can_overwrite => @uploader.qiniu_can_overwrite)
+              else
+                config.merge!(:qiniu_can_overwrite => false)
               end
             end
 

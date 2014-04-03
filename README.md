@@ -52,6 +52,8 @@ class AvatarUploader < CarrierWave::Uploader::Base
 
   self.qiniu_bucket = "avatars"
   self.qiniu_bucket_domain = "avatars.files.example.com"
+  self.qiniu_protocal = 'http'
+  self.qiniu_can_overwrite = true
 
     # See also:
     # https://github.com/qiniu/ruby-sdk/issues/48
