@@ -1,6 +1,6 @@
 # encoding: utf-8
 require 'carrierwave'
-require 'qiniu-rs'
+require 'qiniu'
 
 module CarrierWave
   module Storage
