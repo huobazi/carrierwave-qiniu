@@ -2,11 +2,11 @@
 require File.expand_path('../lib/carrierwave-qiniu/version', __FILE__)
 
 Gem::Specification.new do |gem|
-  gem.authors       = ["Marble Wu"]
-  gem.email         = ["huobazi@gmail.com"]
+  gem.authors       = ["caicai"]
+  gem.email         = ["mingyuan0715@gmail.com"]
   gem.description   = %q{Qiniu Storage support for CarrierWave}
   gem.summary       = %q{Qiniu Storage support for CarrierWave}
-  gem.homepage      = "https://github.com/huobazi/carrierwave-qiniu"
+  gem.homepage      = "https://github.com/qinmingyuan/carrierwave-qiniu"
   gem.license       = "MIT"
 
   gem.files         = `git ls-files`.split($\)
@@ -18,5 +18,5 @@ Gem::Specification.new do |gem|
 
 
   gem.add_dependency "carrierwave"
-  gem.add_dependency "qiniu-rs",["~> 3.4.2"]
+  gem.add_dependency "qiniu", ['~> 6.2.0']
 end
