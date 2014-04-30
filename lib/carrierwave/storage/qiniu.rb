@@ -66,7 +66,7 @@ module CarrierWave
         private
         def init
           init_qiniu_rs_connection
-          setup_publish_bucket_and_domain
+          # setup_publish_bucket_and_domain
         end
 
         def init_qiniu_rs_connection
