@@ -25,10 +25,12 @@ ActiveRecord::Migration.verbose = false
 # 测试的时候需要修改这个地方
 ::CarrierWave.configure do |config|
   config.storage             = :qiniu
-  config.qiniu_access_key    = 'your key'
-  config.qiniu_secret_key    = 'your key'
-  config.qiniu_bucket        = "spec-test"
-  config.qiniu_bucket_domain = "spec-test.qiniudn.com"
+  config.qiniu_access_key    = "xxx"
+  config.qiniu_secret_key    = "xxx"
+
+  config.qiniu_bucket        = "xxx"
+  config.qiniu_bucket_domain = "xxx"
+
   config.qiniu_block_size    = 4*1024*1024
   config.qiniu_protocol      = "http"
 end

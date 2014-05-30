@@ -1,6 +1,6 @@
 # encoding: utf-8
 require 'carrierwave'
-require 'qiniu-rs'
+require 'qiniu'
 
 module CarrierWave
   module Storage
@@ -22,46 +22,42 @@ module CarrierWave
         def store(file, key)
           qiniu_upload_scope = @qiniu_bucket
           qiniu_upload_scope = @qiniu_bucket + ':' + key if @qiniu_can_overwrite
-          token_opts = {
-            :scope => qiniu_upload_scope, :expires_in => 3600 # https://github.com/qiniu/ruby-sdk/pull/15
-          }
-          token_opts.merge!(:async_options => @qiniu_async_ops) if @qiniu_async_ops.size > 0
 
-          uptoken = ::Qiniu::RS.generate_upload_token(token_opts)
+          put_policy = ::Qiniu::Auth::PutPolicy.new(
+            @qiniu_bucket,
+            key,
+            3600
+          )
 
-          opts = {
-            :uptoken            => uptoken,
-            :file               => file.path,
-            :key                => key,
-            :bucket             => @qiniu_bucket,
-            :mime_type          => file.content_type,
-            :enable_crc32_check => true
-          }
-
-          ::Qiniu::RS.upload_file opts
+          code, result, response_headers = ::Qiniu::Storage.upload_with_put_policy(
+            put_policy,
+            file.path,
+            key
+          )
 
         end
 
         def delete(key)
           begin
-            ::Qiniu::RS.delete(@qiniu_bucket, key)
+            ::Qiniu::Storage.delete(@qiniu_bucket, key)
           rescue Exception => e
             nil
           end
         end
 
-        def get_public_url(key)
-          if @qiniu_bucket_domain and @qiniu_bucket_domain.size > 0
-            "#{@qiniu_protocol}://#{@qiniu_bucket_domain}/#{key}"
-          else
-            res = ::Qiniu::RS.get(@qiniu_bucket, key)
-            if res
-              res["url"]
-            else
-              nil
-            end
-          end
-        end
+        # TODO
+        # def get_public_url(key)
+        #   if @qiniu_bucket_domain and @qiniu_bucket_domain.size > 0
+        #     "#{@qiniu_protocol}://#{@qiniu_bucket_domain}/#{key}"
+        #   else
+        #     res = ::Qiniu::RS.get(@qiniu_bucket, key)
+        #     if res
+        #       res["url"]
+        #     else
+        #       nil
+        #     end
+        #   end
+        # end
 
         private
         def init
@@ -71,16 +67,18 @@ module CarrierWave
 
         def init_qiniu_rs_connection
           return if @qiniu_rs_connection_inited
-          ::Qiniu::RS.establish_connection! :access_key => @qiniu_access_key,
+
+          ::Qiniu.establish_connection! :access_key => @qiniu_access_key,
             :secret_key => @qiniu_secret_key,
             :block_size => @qiniu_block_size
 
           @qiniu_rs_connection_inited = true
         end
 
-        def setup_publish_bucket_and_domain
-          ::Qiniu::RS.publish(@qiniu_bucket_domain, @qiniu_bucket)
-        end
+        # TODO
+        # def setup_publish_bucket_and_domain
+        #   ::Qiniu::RS.publish(@qiniu_bucket_domain, @qiniu_bucket)
+        # end
 
       end
 
