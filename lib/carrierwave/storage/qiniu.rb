@@ -68,6 +68,9 @@ module CarrierWave
         def init_qiniu_rs_connection
           return if @qiniu_rs_connection_inited
 
+          Rails.logger.info '-' * 50
+          Rails.logger.info 'init qiniu connection ....'
+
           ::Qiniu.establish_connection! :access_key => @qiniu_access_key,
             :secret_key => @qiniu_secret_key,
             :block_size => @qiniu_block_size
