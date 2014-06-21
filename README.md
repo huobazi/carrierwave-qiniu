@@ -29,6 +29,7 @@ You'll need to configure it in config/initializes/carrierwave.rb
   config.qiniu_secret_key    = 'your qiniu secret_key'
   config.qiniu_bucket        = "carrierwave-qiniu-example"
   config.qiniu_bucket_domain = "carrierwave-qiniu-example.aspxboy.com"
+  config.qiniu_bucket_private= true #default is false
   config.qiniu_block_size    = 4*1024*1024
   config.qiniu_protocol      = "http"
 end
@@ -54,6 +55,7 @@ class AvatarUploader < CarrierWave::Uploader::Base
   self.qiniu_bucket_domain = "avatars.files.example.com"
   self.qiniu_protocal = 'http'
   self.qiniu_can_overwrite = true
+  self.qiniu_bucket_private= true #default is false
 
     # See also:
     # https://github.com/qiniu/ruby-sdk/issues/48
@@ -82,4 +84,3 @@ You can see a example project on: https://github.com/huobazi/carrierwave-qiniu-e
 ## Contributors
 
 See the [Contributors List](https://github.com/huobazi/carrierwave-qiniu/graphs/contributors).
-
