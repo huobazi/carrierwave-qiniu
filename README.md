@@ -35,7 +35,7 @@ You'll need to configure it in config/initializes/carrierwave.rb
 end
 ```
 
-For more information on `qiniu_bucket_domain`, please read http://docs.qiniutek.com/v2/sdk/ruby/#publish
+For more information on qiniu, please read http://developer.qiniu.com/docs/v6/
 
 And then in your uploader, set the storage to `:qiniu`:
 
