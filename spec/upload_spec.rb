@@ -53,10 +53,6 @@ describe "CarrierWave Qiniu" do
 
   class Photo < ActiveRecord::Base
 
-    %W(small little middle large).each do |style|
-      define_method("#{style}_image_url".to_sym){ self.image.url.to_s + "/#{style}" }
-    end
-
     mount_uploader :image, PhotoUploader
   end
 
@@ -77,18 +73,13 @@ describe "CarrierWave Qiniu" do
 
       photo.errors.count.should == 0
 
-      open(photo.small_image_url).should_not == nil
-      open(photo.little_image_url).should_not == nil
-      open(photo.middle_image_url).should_not == nil
-      open(photo.large_image_url).should_not == nil
-
       puts ""
       puts 'The image was uploaded to:'
       puts ""
-      puts photo.small_image_url
-      puts photo.little_image_url
-      puts photo.middle_image_url
-      puts photo.large_image_url
+
+      open(photo.image.url).should_not be_nil
+
+      puts photo.image.url
     end
   end
 end

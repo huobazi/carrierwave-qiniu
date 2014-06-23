@@ -7,6 +7,7 @@ module CarrierWave
       included do
         add_config :qiniu_bucket_domain
         add_config :qiniu_bucket
+        add_config :qiniu_bucket_private
         add_config :qiniu_access_key
         add_config :qiniu_secret_key
         add_config :qiniu_block_size
