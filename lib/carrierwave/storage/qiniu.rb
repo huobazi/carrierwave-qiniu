@@ -10,10 +10,11 @@ module CarrierWave
         def initialize(options={})
           @qiniu_bucket_domain = options[:qiniu_bucket_domain]
           @qiniu_bucket        = options[:qiniu_bucket]
+          @qiniu_bucket_private= options[:qiniu_bucket_private] || false
           @qiniu_access_key    = options[:qiniu_access_key]
           @qiniu_secret_key    = options[:qiniu_secret_key]
           @qiniu_block_size    = options[:qiniu_block_size] || 1024*1024*4
-          @qiniu_protocol      = options[:qiniu_protocol] || options[:qiniu_protocal] || "http"
+          @qiniu_protocol      = options[:qiniu_protocol] || "http"
           @qiniu_async_ops     = options[:qiniu_async_ops] || ''
           @qiniu_can_overwrite = options[:qiniu_can_overwrite] || false
           init
@@ -45,24 +46,16 @@ module CarrierWave
           end
         end
 
-        # TODO
-        # def get_public_url(key)
-        #   if @qiniu_bucket_domain and @qiniu_bucket_domain.size > 0
-        #     "#{@qiniu_protocol}://#{@qiniu_bucket_domain}/#{key}"
-        #   else
-        #     res = ::Qiniu::RS.get(@qiniu_bucket, key)
-        #     if res
-        #       res["url"]
-        #     else
-        #       nil
-        #     end
-        #   end
-        # end
+        def download_url(path)
+          encode_path = URI.escape(path, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]")) #fix chinese file name, same as encodeURIComponent in js
+          primitive_url = "#{@qiniu_protocol}://#{@qiniu_bucket_domain}/#{encode_path}"
+          @qiniu_bucket_private ? ::Qiniu::Auth.authorize_download_url(primitive_url) : primitive_url
+        end
 
         private
+
         def init
           init_qiniu_rs_connection
-          #setup_publish_bucket_and_domain
         end
 
         def init_qiniu_rs_connection
@@ -74,11 +67,6 @@ module CarrierWave
 
           @qiniu_rs_connection_inited = true
         end
-
-        # TODO
-        # def setup_publish_bucket_and_domain
-        #   ::Qiniu::RS.publish(@qiniu_bucket_domain, @qiniu_bucket)
-        # end
 
       end
 
@@ -93,11 +81,7 @@ module CarrierWave
         end
 
         def url
-          if @uploader.qiniu_bucket_domain and @uploader.qiniu_bucket_domain.size > 0
-            "#{@uploader.qiniu_protocol || 'http'}://#{@uploader.qiniu_bucket_domain}/#{@path}"
-          else
-            qiniu_connection.get_public_url(@path)
-          end
+          qiniu_connection.download_url(@path)
         end
 
         def store(file)
@@ -119,6 +103,7 @@ module CarrierWave
               :qiniu_secret_key    => @uploader.qiniu_secret_key,
               :qiniu_bucket        => @uploader.qiniu_bucket,
               :qiniu_bucket_domain => @uploader.qiniu_bucket_domain,
+              :qiniu_bucket_private=> @uploader.qiniu_bucket_private,
               :qiniu_block_size    => @uploader.qiniu_block_size,
               :qiniu_protocol      => @uploader.qiniu_protocol
             }
