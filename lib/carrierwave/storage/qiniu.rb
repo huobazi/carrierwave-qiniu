@@ -48,7 +48,8 @@ module CarrierWave
         end
 
         def stat(key)
-          ::Qiniu::Storage.stat(@qiniu_bucket, key)
+          code, result, response_headers = ::Qiniu::Storage.stat(@qiniu_bucket, key)
+          code == 200 ? result : {}
         end
 
         def download_url(path)
@@ -102,7 +103,7 @@ module CarrierWave
         end
 
         def size
-          (file_info['fsize'] || 0).to_i
+          file_info['fsize'] || 0
         end
 
         private
