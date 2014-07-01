@@ -102,7 +102,7 @@ module CarrierWave
         end
 
         def size
-          file_info['fsize'] || 0
+          (file_info['fsize'] || 0).to_i
         end
 
         private
