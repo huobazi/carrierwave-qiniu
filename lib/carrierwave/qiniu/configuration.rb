@@ -12,7 +12,7 @@ module CarrierWave
         add_config :qiniu_secret_key
         add_config :qiniu_block_size
         add_config :qiniu_protocol
-        add_config :qiniu_async_ops
+        add_config :qiniu_persistent_ops
         add_config :qiniu_can_overwrite
 
         alias_config :qiniu_protocal, :qiniu_protocol
