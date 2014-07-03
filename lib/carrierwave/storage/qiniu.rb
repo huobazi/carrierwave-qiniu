@@ -27,7 +27,8 @@ module CarrierWave
           put_policy = ::Qiniu::Auth::PutPolicy.new(
             @qiniu_bucket,
             key,
-            3600
+            1,
+            1
           )
 
           code, result, response_headers = ::Qiniu::Storage.upload_with_put_policy(
@@ -41,9 +42,14 @@ module CarrierWave
         def delete(key)
           begin
             ::Qiniu::Storage.delete(@qiniu_bucket, key)
-          rescue Exception => e
+          rescue Exception
             nil
           end
+        end
+
+        def stat(key)
+          code, result, response_headers = ::Qiniu::Storage.stat(@qiniu_bucket, key)
+          code == 200 ? result : {}
         end
 
         def download_url(path)
@@ -92,6 +98,14 @@ module CarrierWave
           qiniu_connection.delete(@path)
         end
 
+        def content_type
+          file_info['mimeType'] || 'application/octet-stream'
+        end
+
+        def size
+          file_info['fsize'] || 0
+        end
+
         private
 
         def qiniu_connection
@@ -126,6 +140,10 @@ module CarrierWave
 
             @qiniu_connection ||= Connection.new config
           end
+        end
+
+        def file_info
+          @file_info ||= qiniu_connection.stat(@path)
         end
 
       end
