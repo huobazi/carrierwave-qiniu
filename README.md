@@ -9,6 +9,7 @@ example: https://github.com/huobazi/carrierwave-qiniu-example
 Add this line to your application's Gemfile:
 
     gem 'carrierwave-qiniu'
+    gem 'qiniu', github: 'gaogao1030/ruby-sdk', branch: 'feature/add_persistent_ops_params_in_put_policy'
 
 And then execute:
 
@@ -61,17 +62,25 @@ class AvatarUploader < CarrierWave::Uploader::Base
     # https://github.com/qiniu/ruby-sdk/issues/48
     # http://docs.qiniu.com/api/put.html#uploadToken
     # http://docs.qiniutek.com/v3/api/io/#uploadToken-asyncOps
-    def qiniu_async_ops
-      commands = []
-      %W(small little middle large).each do |style|
-        commands << "http://#{self.qiniu_bucket_domain}/#{self.store_dir}/#{self.filename}/#{style}"
-      end
-      commands
-    end
+  def qiniu_persistent_ops
+   commands = []
+   %W(300x150 85x95).each do |style|
+     url= "#{self.qiniu_bucket}:#{self.store_dir}/#{self.filename}-#{style}"
+     url=Qiniu::Utils.urlsafe_base64_encode(url)
+    commands << "imageMogr2/auto-orient/thumbnail/#{style}|saveas/#{url}"
+   end
+   commands
+  end
 
 end
 ```
 You can see a example project on: https://github.com/huobazi/carrierwave-qiniu-example or see the spec test on https://github.com/huobazi/carrierwave-qiniu/blob/master/spec/upload_spec.rb
+
+you can get persistent_id by log
+```ruby
+  [2014-07-07T11:52:23.724179 #30202]  INFO -- : {"hash"=>hash "key"=>path/to/file.png, "persistentId"=> persistentId}
+```
+
 
 ## Contributing
 

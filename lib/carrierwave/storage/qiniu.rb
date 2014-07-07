@@ -15,7 +15,7 @@ module CarrierWave
           @qiniu_secret_key    = options[:qiniu_secret_key]
           @qiniu_block_size    = options[:qiniu_block_size] || 1024*1024*4
           @qiniu_protocol      = options[:qiniu_protocol] || "http"
-          @qiniu_async_ops     = options[:qiniu_async_ops] || ''
+          @qiniu_persistent_ops= options[:qiniu_persistent_ops] || ''
           @qiniu_can_overwrite = options[:qiniu_can_overwrite] || false
           init
         end
@@ -27,8 +27,9 @@ module CarrierWave
           put_policy = ::Qiniu::Auth::PutPolicy.new(
             @qiniu_bucket,
             key,
-            1,
-            1
+            @qiniu_persistent_ops,
+            100,
+            100
           )
 
           code, result, response_headers = ::Qiniu::Storage.upload_with_put_policy(
@@ -36,7 +37,7 @@ module CarrierWave
             file.path,
             key
           )
-
+          ::Qiniu::Log.logger.info result
         end
 
         def delete(key)
@@ -122,11 +123,11 @@ module CarrierWave
               :qiniu_protocol      => @uploader.qiniu_protocol
             }
 
-            if @uploader.respond_to?(:qiniu_async_ops) and !@uploader.qiniu_async_ops.nil? and @uploader.qiniu_async_ops.size > 0
-              if @uploader.qiniu_async_ops.is_a?(Array)
-                config.merge!(:qiniu_async_ops => @uploader.qiniu_async_ops.join(';'))
+            if @uploader.respond_to?(:qiniu_persistent_ops) and !@uploader.qiniu_persistent_ops.nil? and @uploader.qiniu_persistent_ops.size > 0
+              if @uploader.qiniu_persistent_ops.is_a?(Array)
+                config.merge!(:qiniu_persistent_ops => @uploader.qiniu_persistent_ops.join(';'))
               else
-                config.merge!(:qiniu_async_ops => @uploader.qiniu_async_ops)
+                config.merge!(:qiniu_persistent_ops => @uploader.qiniu_persistent_ops)
               end
             end
 
