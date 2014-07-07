@@ -28,8 +28,8 @@ module CarrierWave
             @qiniu_bucket,
             key,
             @qiniu_persistent_ops,
-            10,
-            10
+            100,
+            100
           )
 
           code, result, response_headers = ::Qiniu::Storage.upload_with_put_policy(
