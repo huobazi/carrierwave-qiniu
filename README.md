@@ -9,6 +9,7 @@ example: https://github.com/huobazi/carrierwave-qiniu-example
 Add this line to your application's Gemfile:
 
     gem 'carrierwave-qiniu'
+		gem 'qiniu', github: 'gaogao1030/ruby-sdk', branch: 'feature/add_persistent_ops_params_in_put_policy'
 
 And then execute:
 
