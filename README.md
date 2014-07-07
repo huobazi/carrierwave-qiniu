@@ -61,13 +61,15 @@ class AvatarUploader < CarrierWave::Uploader::Base
     # https://github.com/qiniu/ruby-sdk/issues/48
     # http://docs.qiniu.com/api/put.html#uploadToken
     # http://docs.qiniutek.com/v3/api/io/#uploadToken-asyncOps
-    def qiniu_async_ops
-      commands = []
-      %W(small little middle large).each do |style|
-        commands << "http://#{self.qiniu_bucket_domain}/#{self.store_dir}/#{self.filename}/#{style}"
-      end
-      commands
-    end
+  def qiniu_persistent_ops
+   commands = []
+   %W(300x150 85x95).each do |style|
+     url= "#{self.qiniu_bucket}:#{self.store_dir}/#{self.filename}-#{style}"
+     url=Qiniu::Utils.urlsafe_base64_encode(url)
+    commands << "imageMogr2/auto-orient/thumbnail/#{style}|saveas/#{url}"
+   end
+   commands
+  end
 
 end
 ```
