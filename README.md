@@ -75,6 +75,12 @@ end
 ```
 You can see a example project on: https://github.com/huobazi/carrierwave-qiniu-example or see the spec test on https://github.com/huobazi/carrierwave-qiniu/blob/master/spec/upload_spec.rb
 
+you can get persistent_id by log
+```ruby
+  [2014-07-07T11:52:23.724179 #30202]  INFO -- : {"hash"=>hash "key"=>path/to/file.png, "persistentId"=> persistentId}
+```
+
+
 ## Contributing
 
 1. Fork it
