@@ -27,7 +27,7 @@ module CarrierWave
           put_policy = ::Qiniu::Auth::PutPolicy.new(
             @qiniu_bucket,
             key,
-            1,
+            2,
             1
           )
 
