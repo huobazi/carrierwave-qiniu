@@ -17,6 +17,7 @@ module CarrierWave
           @qiniu_protocol      = options[:qiniu_protocol] || "http"
           @qiniu_async_ops     = options[:qiniu_async_ops] || ''
           @qiniu_can_overwrite = options[:qiniu_can_overwrite] || false
+          @qiniu_expires_in    = options[:expires_in] || 3600
           init
         end
 
@@ -27,7 +28,7 @@ module CarrierWave
           put_policy = ::Qiniu::Auth::PutPolicy.new(
             @qiniu_bucket,
             key,
-            1,
+            @qiniu_expires_in,
             1
           )
 
