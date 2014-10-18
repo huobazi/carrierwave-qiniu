@@ -1,7 +1,8 @@
 # Carrierwave::Qiniu
 
-This gem adds storage support for [Qiniu](http://qiniutek.com) to [Carrierwave](https://github.com/jnicklas/carrierwave)
+[![Gem Version](https://badge.fury.io/rb/carrierwave-qiniu.svg)](http://badge.fury.io/rb/carrierwave-qiniu)
 
+This gem adds storage support for [Qiniu](http://qiniutek.com) to [Carrierwave](https://github.com/jnicklas/carrierwave)
 example: https://github.com/huobazi/carrierwave-qiniu-example
 
 ## Installation
@@ -18,7 +19,6 @@ Or install it yourself as:
 
     $ gem install carrierwave-qiniu
 
-[![Gem Version](https://badge.fury.io/rb/carrierwave-qiniu.svg)](http://badge.fury.io/rb/carrierwave-qiniu)
 ## Usage
 
 You'll need to configure it in config/initializes/carrierwave.rb
