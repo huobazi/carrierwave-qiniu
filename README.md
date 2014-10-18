@@ -18,6 +18,7 @@ Or install it yourself as:
 
     $ gem install carrierwave-qiniu
 
+[![Gem Version](https://badge.fury.io/rb/carrierwave-qiniu.svg)](http://badge.fury.io/rb/carrierwave-qiniu)
 ## Usage
 
 You'll need to configure it in config/initializes/carrierwave.rb
