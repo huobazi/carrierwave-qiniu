@@ -17,7 +17,7 @@ module CarrierWave
           @qiniu_protocol      = options[:qiniu_protocol] || "http"
           @qiniu_async_ops     = options[:qiniu_async_ops] || ''
           @qiniu_can_overwrite = options[:qiniu_can_overwrite] || false
-          @qiniu_expires_in    = options[:expires_in] || 3600
+          @qiniu_expires_in    = options[:qiniu_expires_in] || 3600
           init
         end
 
@@ -120,7 +120,8 @@ module CarrierWave
               :qiniu_bucket_domain => @uploader.qiniu_bucket_domain,
               :qiniu_bucket_private=> @uploader.qiniu_bucket_private,
               :qiniu_block_size    => @uploader.qiniu_block_size,
-              :qiniu_protocol      => @uploader.qiniu_protocol
+              :qiniu_protocol      => @uploader.qiniu_protocol,
+              :qiniu_expires_in    => @uploader.qiniu_expires_in
             }
 
             if @uploader.respond_to?(:qiniu_async_ops) and !@uploader.qiniu_async_ops.nil? and @uploader.qiniu_async_ops.size > 0
