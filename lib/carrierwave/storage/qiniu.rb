@@ -22,12 +22,12 @@ module CarrierWave
         end
 
         def store(file, key)
-          qiniu_upload_scope = @qiniu_bucket
-          qiniu_upload_scope = @qiniu_bucket + ':' + key if @qiniu_can_overwrite
+          overwrite_file = nil
+          overwrite_file = key if @qiniu_can_overwrite
 
           put_policy = ::Qiniu::Auth::PutPolicy.new(
             @qiniu_bucket,
-            key,
+            overwrite_file,
             @qiniu_expires_in,
             1
           )
