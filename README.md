@@ -58,10 +58,11 @@ class AvatarUploader < CarrierWave::Uploader::Base
   self.qiniu_can_overwrite = true
   self.qiniu_bucket_private= true #default is false
 
-    # See also:
+    # 指定预转数据处理命令
     # https://github.com/qiniu/ruby-sdk/issues/48
     # http://docs.qiniu.com/api/put.html#uploadToken
     # http://docs.qiniutek.com/v3/api/io/#uploadToken-asyncOps
+    # http://developer.qiniu.com/docs/v6/api/reference/security/put-policy.html#put-policy-persistent-ops-explanation
     def qiniu_async_ops
       commands = []
       %W(small little middle large).each do |style|
@@ -72,7 +73,8 @@ class AvatarUploader < CarrierWave::Uploader::Base
 
 end
 ```
-You can see a example project on: https://github.com/huobazi/carrierwave-qiniu-example or see the spec test on https://github.com/huobazi/carrierwave-qiniu/blob/master/spec/upload_spec.rb
+You can see a example project on: https://github.com/huobazi/carrierwave-qiniu-example 
+or see the spec test on https://github.com/huobazi/carrierwave-qiniu/blob/master/spec/upload_spec.rb
 
 ## Contributing
 
