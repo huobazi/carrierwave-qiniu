@@ -29,7 +29,7 @@ module CarrierWave
             @qiniu_bucket,
             overwrite_file,
             @qiniu_expires_in,
-            1
+            nil
           )
           put_policy.persistent_ops = @qiniu_async_ops
 
