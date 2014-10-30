@@ -31,6 +31,7 @@ module CarrierWave
             @qiniu_expires_in,
             1
           )
+          put_policy.persistent_ops = @qiniu_async_ops
 
           code, result, response_headers = ::Qiniu::Storage.upload_with_put_policy(
             put_policy,
