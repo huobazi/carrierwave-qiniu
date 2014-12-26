@@ -18,6 +18,7 @@ module CarrierWave
           @qiniu_async_ops     = options[:qiniu_async_ops] || ''
           @qiniu_can_overwrite = options[:qiniu_can_overwrite] || false
           @qiniu_expires_in    = options[:qiniu_expires_in] || options[:expires_in] || 3600
+          @qiniu_up_host        = options[:qiniu_up_host]
           init
         end
 
@@ -67,13 +68,15 @@ module CarrierWave
         end
 
         def init_qiniu_rs_connection
-          return if @qiniu_rs_connection_inited
+          #return if @qiniu_rs_connection_inited
 
           ::Qiniu.establish_connection! :access_key => @qiniu_access_key,
             :secret_key => @qiniu_secret_key,
-            :block_size => @qiniu_block_size
+            :block_size => @qiniu_block_size,
+            :up_host    => @qiniu_up_host,
+            :user_agent => 'CarrierWave-Qiniu/' + Carrierwave::Qiniu::VERSION + ' ('+RUBY_PLATFORM+')' + ' Ruby/'+ RUBY_VERSION
 
-          @qiniu_rs_connection_inited = true
+          #@qiniu_rs_connection_inited = true
         end
 
       end

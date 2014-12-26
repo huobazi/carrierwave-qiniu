@@ -15,6 +15,7 @@ module CarrierWave
         add_config :qiniu_async_ops
         add_config :qiniu_can_overwrite
         add_config :qiniu_expires_in
+        add_config :qiniu_up_host
 
         alias_config :qiniu_protocal, :qiniu_protocol
       end
