@@ -19,6 +19,7 @@ module CarrierWave
           @qiniu_can_overwrite = options[:qiniu_can_overwrite] || false
           @qiniu_expires_in    = options[:qiniu_expires_in] || options[:expires_in] || 3600
           @qiniu_up_host       = options[:qiniu_up_host]
+          @qiniu_private_url_expires_in = options[:qiniu_private_url_expires_in] || 3600
           init
         end
 
@@ -56,9 +57,11 @@ module CarrierWave
         end
 
         def download_url(path)
+          private_url_args = {}
           encode_path = URI.escape(path, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]")) #fix chinese file name, same as encodeURIComponent in js
           primitive_url = "#{@qiniu_protocol}://#{@qiniu_bucket_domain}/#{encode_path}"
-          @qiniu_bucket_private ? ::Qiniu::Auth.authorize_download_url(primitive_url) : primitive_url
+          private_url_args.merge!(expires_in: @qiniu_private_url_expires_in) if @qiniu_bucket_private
+          @qiniu_bucket_private ? ::Qiniu::Auth.authorize_download_url(primitive_url, private_url_args) : primitive_url
         end
 
         private
