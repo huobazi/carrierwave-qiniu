@@ -55,6 +55,11 @@ module CarrierWave
           code == 200 ? result : {}
         end
 
+        def get(path)
+          code, result, response_headers = ::Qiniu::HTTP.get( download_url(path) )
+          code == 200 ? result : nil
+        end
+
         def download_url(path)
           encode_path = URI.escape(path, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]")) #fix chinese file name, same as encodeURIComponent in js
           primitive_url = "#{@qiniu_protocol}://#{@qiniu_bucket_domain}/"
@@ -105,6 +110,17 @@ module CarrierWave
 
         def delete
           qiniu_connection.delete(@path)
+        end
+
+        ##
+        # Reads the contents of the file from Cloud Files
+        #
+        # === Returns
+        #
+        # [String] contents of the file
+        #
+        def read
+          qiniu_connection.get(@path)
         end
 
         def content_type
