@@ -1,6 +1,8 @@
 # encoding: utf-8
 require 'carrierwave'
 require 'qiniu'
+require 'rest_client'
+require 'qiniu/http'
 
 module CarrierWave
   module Storage
