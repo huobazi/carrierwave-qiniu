@@ -73,12 +73,16 @@ module CarrierWave
         def init_qiniu_rs_connection
           #return if @qiniu_rs_connection_inited
 
-          ::Qiniu.establish_connection! :access_key => @qiniu_access_key,
+          options = {
+            :access_key => @qiniu_access_key,
             :secret_key => @qiniu_secret_key,
-            :block_size => @qiniu_block_size,
-            :up_host    => @qiniu_up_host,
             :user_agent => 'CarrierWave-Qiniu/' + Carrierwave::Qiniu::VERSION + ' ('+RUBY_PLATFORM+')' + ' Ruby/'+ RUBY_VERSION
-
+          }
+          options.merge(:block_size => @qiniu_block_size) if @qiniu_block_size
+          options.merge(:up_host    => @qiniu_up_host) if @qiniu_up_host
+          
+          ::Qiniu.establish_connection! options
+          
           #@qiniu_rs_connection_inited = true
         end
 
