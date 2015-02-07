@@ -51,8 +51,13 @@ module CarrierWave
         end
 
         def stat(key)
-          code, result, response_headers = ::Qiniu::Storage.stat(@qiniu_bucket, key)
+          code, result, response_headers = ::Qiniu::Storage.establish_connection.stat(@qiniu_bucket, key)
           code == 200 ? result : {}
+        end
+
+        def get(path)
+          code, result, response_headers = ::Qiniu::HTTP.get(download_url(path))
+          code == 200 ? result : nil
         end
 
         def download_url(path)
@@ -105,6 +110,17 @@ module CarrierWave
 
         def delete
           qiniu_connection.delete(@path)
+        end
+
+        ##
+        # Reads the contents of the file from Cloud Files
+        #
+        # === Returns
+        #
+        # [String] contents of the file
+        #
+        def read
+          qiniu_connection.get(@path)
         end
 
         def content_type
