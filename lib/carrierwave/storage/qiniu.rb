@@ -133,7 +133,7 @@ module CarrierWave
               :qiniu_block_size    => @uploader.qiniu_block_size,
               :qiniu_protocol      => @uploader.qiniu_protocol,
               :qiniu_expires_in    => @uploader.qiniu_expires_in,
-              :qiniu_up_host       => @uploader.qiniu_up_host
+              :qiniu_up_host       => @uploader.qiniu_up_host,
               :qiniu_private_url_expires_in => @uploader.qiniu_private_url_expires_in
             }
 
