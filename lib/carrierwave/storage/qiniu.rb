@@ -122,7 +122,7 @@ module CarrierWave
         # [String] contents of the file
         #
         def read
-          qiniu_connection.get(@path)
+          qiniu_connection.get(@path) if self.size > 0
         end
 
         def content_type
