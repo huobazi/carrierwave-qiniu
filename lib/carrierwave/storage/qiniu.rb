@@ -1,7 +1,7 @@
 # encoding: utf-8
 require 'carrierwave'
 require 'qiniu'
-require 'rest_client'
+require 'faraday'
 require 'qiniu/http'
 
 module CarrierWave
