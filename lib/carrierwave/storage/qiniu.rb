@@ -1,6 +1,7 @@
 # encoding: utf-8
 require 'carrierwave'
 require 'qiniu'
+require 'qiniu/http'
 
 module CarrierWave
   module Storage
@@ -56,12 +57,17 @@ module CarrierWave
           code == 200 ? result : {}
         end
 
+        def get(path)
+          code, result, response_headers = ::Qiniu::HTTP.get( download_url(path) )
+          code == 200 ? result : nil
+        end
+
         def download_url(path)
           private_url_args = {}
           encode_path = URI.escape(path, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]")) #fix chinese file name, same as encodeURIComponent in js
           primitive_url = "#{@qiniu_protocol}://#{@qiniu_bucket_domain}/#{encode_path}"
           private_url_args.merge!(expires_in: @qiniu_private_url_expires_in) if @qiniu_bucket_private
-          @qiniu_bucket_private ? ::Qiniu::Auth.authorize_download_url(primitive_url, private_url_args) : primitive_url
+          @qiniu_bucket_private ? ::Qiniu::Auth.authorize_download_url("#{primitive_url}#{encode_path}") : "#{primitive_url}#{path}"
         end
 
         private
@@ -71,8 +77,6 @@ module CarrierWave
         end
 
         def init_qiniu_rs_connection
-          #return if @qiniu_rs_connection_inited
-
           options = {
             :access_key => @qiniu_access_key,
             :secret_key => @qiniu_secret_key,
@@ -80,10 +84,9 @@ module CarrierWave
           }
           options.merge(:block_size => @qiniu_block_size) if @qiniu_block_size
           options.merge(:up_host    => @qiniu_up_host) if @qiniu_up_host
-          
+
           ::Qiniu.establish_connection! options
-          
-          #@qiniu_rs_connection_inited = true
+
         end
 
       end
@@ -108,6 +111,17 @@ module CarrierWave
 
         def delete
           qiniu_connection.delete(@path)
+        end
+
+        ##
+        # Reads the contents of the file from Cloud Files
+        #
+        # === Returns
+        #
+        # [String] contents of the file
+        #
+        def read
+          qiniu_connection.get(@path) if self.size > 0
         end
 
         def content_type
