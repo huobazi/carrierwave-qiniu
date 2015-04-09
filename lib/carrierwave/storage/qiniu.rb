@@ -1,7 +1,6 @@
 # encoding: utf-8
 require 'carrierwave'
 require 'qiniu'
-require 'faraday'
 require 'qiniu/http'
 
 module CarrierWave
