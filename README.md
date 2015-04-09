@@ -89,3 +89,7 @@ or see the spec test on https://github.com/huobazi/carrierwave-qiniu/blob/master
 ## Contributors
 
 See the [Contributors List](https://github.com/huobazi/carrierwave-qiniu/graphs/contributors).
+
+## CHANGE LOG
+
+See the [CHANGELOGS.md](https://github.com/huobazi/carrierwave-qiniu/blob/master/CHANGELOG.md).
