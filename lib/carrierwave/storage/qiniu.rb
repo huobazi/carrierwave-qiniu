@@ -18,7 +18,8 @@ module CarrierWave
           @qiniu_async_ops     = options[:qiniu_async_ops] || ''
           @qiniu_can_overwrite = options[:qiniu_can_overwrite] || false
           @qiniu_expires_in    = options[:qiniu_expires_in] || options[:expires_in] || 3600
-          @qiniu_up_host        = options[:qiniu_up_host]
+          @qiniu_up_host       = options[:qiniu_up_host]
+          @qiniu_private_url_expires_in = options[:qiniu_private_url_expires_in] || 3600
           init
         end
 
@@ -56,9 +57,11 @@ module CarrierWave
         end
 
         def download_url(path)
+          private_url_args = {}
           encode_path = URI.escape(path, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]")) #fix chinese file name, same as encodeURIComponent in js
           primitive_url = "#{@qiniu_protocol}://#{@qiniu_bucket_domain}/#{encode_path}"
-          @qiniu_bucket_private ? ::Qiniu::Auth.authorize_download_url(primitive_url) : primitive_url
+          private_url_args.merge!(expires_in: @qiniu_private_url_expires_in) if @qiniu_bucket_private
+          @qiniu_bucket_private ? ::Qiniu::Auth.authorize_download_url(primitive_url, private_url_args) : primitive_url
         end
 
         private
@@ -70,12 +73,16 @@ module CarrierWave
         def init_qiniu_rs_connection
           #return if @qiniu_rs_connection_inited
 
-          ::Qiniu.establish_connection! :access_key => @qiniu_access_key,
+          options = {
+            :access_key => @qiniu_access_key,
             :secret_key => @qiniu_secret_key,
-            :block_size => @qiniu_block_size,
-            :up_host    => @qiniu_up_host,
             :user_agent => 'CarrierWave-Qiniu/' + Carrierwave::Qiniu::VERSION + ' ('+RUBY_PLATFORM+')' + ' Ruby/'+ RUBY_VERSION
-
+          }
+          options.merge(:block_size => @qiniu_block_size) if @qiniu_block_size
+          options.merge(:up_host    => @qiniu_up_host) if @qiniu_up_host
+          
+          ::Qiniu.establish_connection! options
+          
           #@qiniu_rs_connection_inited = true
         end
 
@@ -125,7 +132,9 @@ module CarrierWave
               :qiniu_bucket_private=> @uploader.qiniu_bucket_private,
               :qiniu_block_size    => @uploader.qiniu_block_size,
               :qiniu_protocol      => @uploader.qiniu_protocol,
-              :qiniu_expires_in    => @uploader.qiniu_expires_in
+              :qiniu_expires_in    => @uploader.qiniu_expires_in,
+              :qiniu_up_host       => @uploader.qiniu_up_host,
+              :qiniu_private_url_expires_in => @uploader.qiniu_private_url_expires_in
             }
 
             if @uploader.respond_to?(:qiniu_async_ops) and !@uploader.qiniu_async_ops.nil? and @uploader.qiniu_async_ops.size > 0
