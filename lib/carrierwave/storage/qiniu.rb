@@ -64,7 +64,7 @@ module CarrierWave
 
         def download_url(path)
           private_url_args = {}
-          encode_path = URI.escape(path, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]")) #fix chinese file name, same as encodeURIComponent in js
+          encode_path = URI.escape(path) #fix chinese file name, same as encodeURIComponent in js but preserve slash '/'
           primitive_url = "#{@qiniu_protocol}://#{@qiniu_bucket_domain}/#{encode_path}"
           private_url_args.merge!(expires_in: @qiniu_private_url_expires_in) if @qiniu_bucket_private
           @qiniu_bucket_private ? ::Qiniu::Auth.authorize_download_url(primitive_url, private_url_args) : primitive_url
