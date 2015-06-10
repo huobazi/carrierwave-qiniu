@@ -1,7 +1,7 @@
 
 ## CHANGE LOG
 
-### v0.1.7.1
+### v0.1.8.1
 
 https://github.com/huobazi/carrierwave-qiniu/pull/36
 
