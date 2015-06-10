@@ -1,6 +1,11 @@
 
 ## CHANGE LOG
 
+### v0.1.7.1
+
+https://github.com/huobazi/carrierwave-qiniu/pull/36
+
+
 ### v0.1.7
 
 - 添加从云端读取（下载）文件  。 [https://github.com/huobazi/carrierwave-qiniu/pull/27](https://github.com/huobazi/carrierwave-qiniu/pull/27)
