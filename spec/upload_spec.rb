@@ -75,7 +75,7 @@ describe "CarrierWave Qiniu" do
 
       puts ""
       puts 'The image was uploaded to:'
-      puts ""
+      puts photo.image.url
 
       open(photo.image.url).should_not be_nil
 

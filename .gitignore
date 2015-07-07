@@ -3,6 +3,8 @@
 .bundle
 .config
 .yardoc
+.env
+.env.*
 Gemfile.lock
 InstalledFiles
 _yardoc
@@ -16,4 +18,3 @@ test/tmp
 test/version_tmp
 tmp
 uploads/
-
