@@ -12,4 +12,5 @@ group :test do
   gem 'qiniu'
   gem 'rspec', '~> 2.11'
   gem 'mocha', '>=0.10.0'
+  gem 'dotenv'
 end

@@ -36,7 +36,7 @@ module CarrierWave
           )
           put_policy.persistent_ops = @qiniu_async_ops
 
-          code, result, response_headers = ::Qiniu::Storage.upload_with_put_policy(
+          ::Qiniu::Storage.upload_with_put_policy(
             put_policy,
             file.path,
             key
@@ -45,29 +45,27 @@ module CarrierWave
         end
 
         def delete(key)
-          begin
-            ::Qiniu::Storage.delete(@qiniu_bucket, key)
-          rescue Exception
-            nil
-          end
+          ::Qiniu::Storage.delete(@qiniu_bucket, key) rescue nil
         end
 
         def stat(key)
-          code, result, response_headers = ::Qiniu::Storage.stat(@qiniu_bucket, key)
+          code, result, _ = ::Qiniu::Storage.stat(@qiniu_bucket, key)
           code == 200 ? result : {}
         end
 
         def get(path)
-          code, result, response_headers = ::Qiniu::HTTP.get( download_url(path) )
+          code, result, _ = ::Qiniu::HTTP.get( download_url(path) )
           code == 200 ? result : nil
         end
 
         def download_url(path)
-          private_url_args = {}
           encode_path = URI.escape(path) #fix chinese file name, same as encodeURIComponent in js but preserve slash '/'
           primitive_url = "#{@qiniu_protocol}://#{@qiniu_bucket_domain}/#{encode_path}"
-          private_url_args.merge!(expires_in: @qiniu_private_url_expires_in) if @qiniu_bucket_private
-          @qiniu_bucket_private ? ::Qiniu::Auth.authorize_download_url(primitive_url, private_url_args) : primitive_url
+          @qiniu_bucket_private ? \
+            ::Qiniu::Auth.authorize_download_url(primitive_url, :expires_in => @qiniu_private_url_expires_in) \
+            : \
+            primitive_url
+
         end
 
         private
@@ -76,14 +74,16 @@ module CarrierWave
           init_qiniu_rs_connection
         end
 
+        UserAgent = "CarrierWave-Qiniu/#{Carrierwave::Qiniu::VERSION} (#{RUBY_PLATFORM}) Ruby/#{RUBY_VERSION}".freeze
+
         def init_qiniu_rs_connection
           options = {
             :access_key => @qiniu_access_key,
             :secret_key => @qiniu_secret_key,
-            :user_agent => 'CarrierWave-Qiniu/' + Carrierwave::Qiniu::VERSION + ' ('+RUBY_PLATFORM+')' + ' Ruby/'+ RUBY_VERSION
+            :user_agent => UserAgent
           }
-          options.merge(:block_size => @qiniu_block_size) if @qiniu_block_size
-          options.merge(:up_host    => @qiniu_up_host) if @qiniu_up_host
+          options[:block_size] = @qiniu_block_size if @qiniu_block_size
+          options[:up_host] = @qiniu_up_host if @qiniu_up_host
 
           ::Qiniu.establish_connection! options
 
@@ -125,7 +125,7 @@ module CarrierWave
         end
 
         def content_type
-          file_info['mimeType'] || 'application/octet-stream'
+          file_info['mimeType'] || 'application/octet-stream'.freeze
         end
 
         def size
@@ -135,9 +135,7 @@ module CarrierWave
         private
 
         def qiniu_connection
-          if @qiniu_connection
-            @qiniu_connection
-          else
+          @qiniu_connection ||= begin
             config = {
               :qiniu_access_key    => @uploader.qiniu_access_key,
               :qiniu_secret_key    => @uploader.qiniu_secret_key,
@@ -151,23 +149,10 @@ module CarrierWave
               :qiniu_private_url_expires_in => @uploader.qiniu_private_url_expires_in
             }
 
-            if @uploader.respond_to?(:qiniu_async_ops) and !@uploader.qiniu_async_ops.nil? and @uploader.qiniu_async_ops.size > 0
-              if @uploader.qiniu_async_ops.is_a?(Array)
-                config.merge!(:qiniu_async_ops => @uploader.qiniu_async_ops.join(';'))
-              else
-                config.merge!(:qiniu_async_ops => @uploader.qiniu_async_ops)
-              end
-            end
+            config[:qiniu_async_ops] = Array(@uploader.qiniu_async_ops).join(';') rescue ''
+            config[:qiniu_can_overwrite] = @uploader.try :qiniu_can_overwrite rescue false
 
-            if @uploader.respond_to?(:qiniu_can_overwrite) and !@uploader.qiniu_can_overwrite.nil?
-              if @uploader.qiniu_can_overwrite.is_a?(TrueClass) or @uploader.is_a?(FalseClass)
-                config.merge!(:qiniu_can_overwrite => @uploader.qiniu_can_overwrite)
-              else
-                config.merge!(:qiniu_can_overwrite => false)
-              end
-            end
-
-            @qiniu_connection ||= Connection.new config
+            Connection.new config
           end
         end
 
