@@ -4,7 +4,7 @@
 ### v0.1.8.1
 
 https://github.com/huobazi/carrierwave-qiniu/pull/36
-
+https://github.com/huobazi/carrierwave-qiniu/pull/38
 
 ### v0.1.7
 
