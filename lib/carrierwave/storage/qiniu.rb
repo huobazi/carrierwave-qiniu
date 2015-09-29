@@ -74,7 +74,7 @@ module CarrierWave
           init_qiniu_rs_connection
         end
 
-        UserAgent = "CarrierWave-Qiniu/#{Carrierwave::Qiniu::VERSION} (#{RUBY_PLATFORM}) Ruby/#{RUBY_VERSION}".freeze
+        UserAgent = "CarrierWave-Qiniu/#{CarrierWave::Qiniu::VERSION} (#{RUBY_PLATFORM}) Ruby/#{RUBY_VERSION}".freeze
 
         def init_qiniu_rs_connection
           options = {
