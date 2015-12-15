@@ -1,6 +1,10 @@
 
 ## CHANGE LOG
 
+### v0.2.0
+
+- 升级七牛 SDK 至 6.5.2
+
 ### v0.1.8.2
 
 https://github.com/huobazi/carrierwave-qiniu/pull/42
