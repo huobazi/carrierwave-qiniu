@@ -13,6 +13,7 @@ module CarrierWave
         add_config :qiniu_block_size
         add_config :qiniu_protocol
         add_config :qiniu_async_ops
+        add_config :qiniu_persistent_notify_url
         add_config :qiniu_callback_url
         add_config :qiniu_callback_body
         add_config :qiniu_can_overwrite
