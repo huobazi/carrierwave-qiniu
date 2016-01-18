@@ -54,13 +54,13 @@ You can override configuration item in individual uploader like this:
 class AvatarUploader < CarrierWave::Uploader::Base
   storage :qiniu
 
-  self.qiniu_bucket = "avatars"
-  self.qiniu_bucket_domain = "avatars.files.example.com"
-  self.qiniu_protocal = 'http'
-  self.qiniu_can_overwrite = true
-  self.qiniu_bucket_private = true #default is false
-  self.qiniu_callback_url = "http://<ip1>/callback;http://<ip2>/callback"
-  self.qiniu_callback_body = "key=$(key)&hash=$(etag)&w=$(imageInfo.width)&h=$(imageInfo.height)" # see http://developer.qiniu.com/docs/v6/api/overview/up/response/vars.html#magicvar
+  self.qiniu_bucket                = "avatars"
+  self.qiniu_bucket_domain         = "avatars.files.example.com"
+  self.qiniu_protocal              = 'http'
+  self.qiniu_can_overwrite         = true
+  self.qiniu_bucket_private        = true #default is false
+  self.qiniu_callback_url          = "http://<ip1>/callback;http://<ip2>/callback"
+  self.qiniu_callback_body         = "key=$(key)&hash=$(etag)&w=$(imageInfo.width)&h=$(imageInfo.height)" # see http://developer.qiniu.com/docs/v6/api/overview/up/response/vars.html#magicvar
   self.qiniu_persistent_notify_url = "http://<ip>/notify"
 
     # 指定预转数据处理命令
