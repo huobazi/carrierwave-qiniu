@@ -21,6 +21,9 @@ module CarrierWave
           @qiniu_expires_in    = options[:qiniu_expires_in] || options[:expires_in] || 3600
           @qiniu_up_host       = options[:qiniu_up_host]
           @qiniu_private_url_expires_in = options[:qiniu_private_url_expires_in] || 3600
+          @qiniu_callback_url  = options[:qiniu_callback_url] || ''
+          @qiniu_callback_body = options[:qiniu_callback_body] || ''
+          @qiniu_persistent_notify_url  = options[:qiniu_persistent_notify_url] || ''
           init
         end
 
@@ -35,6 +38,9 @@ module CarrierWave
             nil
           )
           put_policy.persistent_ops = @qiniu_async_ops
+          put_policy.callback_url = @qiniu_callback_url if @qiniu_callback_url.present?
+          put_policy.callback_body = @qiniu_callback_body if @qiniu_callback_body.present?
+          put_policy.persistent_notify_url = @qiniu_persistent_notify_url if @qiniu_persistent_notify_url.present?
 
           ::Qiniu::Storage.upload_with_put_policy(
             put_policy,
@@ -146,7 +152,10 @@ module CarrierWave
               :qiniu_protocol      => @uploader.qiniu_protocol,
               :qiniu_expires_in    => @uploader.qiniu_expires_in,
               :qiniu_up_host       => @uploader.qiniu_up_host,
-              :qiniu_private_url_expires_in => @uploader.qiniu_private_url_expires_in
+              :qiniu_private_url_expires_in => @uploader.qiniu_private_url_expires_in,
+              :qiniu_callback_url  => @uploader.qiniu_callback_url,
+              :qiniu_callback_body => @uploader.qiniu_callback_body,
+              :qiniu_persistent_notify_url  => @uploader.qiniu_persistent_notify_url
             }
 
             config[:qiniu_async_ops] = Array(@uploader.qiniu_async_ops).join(';') rescue ''
