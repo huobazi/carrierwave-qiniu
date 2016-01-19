@@ -9,20 +9,20 @@ module CarrierWave
 
       class Connection
         def initialize(options={})
-          @qiniu_bucket_domain = options[:qiniu_bucket_domain]
-          @qiniu_bucket        = options[:qiniu_bucket]
-          @qiniu_bucket_private= options[:qiniu_bucket_private] || false
-          @qiniu_access_key    = options[:qiniu_access_key]
-          @qiniu_secret_key    = options[:qiniu_secret_key]
-          @qiniu_block_size    = options[:qiniu_block_size] || 1024*1024*4
-          @qiniu_protocol      = options[:qiniu_protocol] || "http"
-          @qiniu_async_ops     = options[:qiniu_async_ops] || ''
-          @qiniu_can_overwrite = options[:qiniu_can_overwrite] || false
-          @qiniu_expires_in    = options[:qiniu_expires_in] || options[:expires_in] || 3600
-          @qiniu_up_host       = options[:qiniu_up_host]
+          @qiniu_bucket_domain          = options[:qiniu_bucket_domain]
+          @qiniu_bucket                 = options[:qiniu_bucket]
+          @qiniu_bucket_private         = options[:qiniu_bucket_private] || false
+          @qiniu_access_key             = options[:qiniu_access_key]
+          @qiniu_secret_key             = options[:qiniu_secret_key]
+          @qiniu_block_size             = options[:qiniu_block_size] || 1024*1024*4
+          @qiniu_protocol               = options[:qiniu_protocol] || "http"
+          @qiniu_async_ops              = options[:qiniu_async_ops] || ''
+          @qiniu_can_overwrite          = options[:qiniu_can_overwrite] || false
+          @qiniu_expires_in             = options[:qiniu_expires_in] || options[:expires_in] || 3600
+          @qiniu_up_host                = options[:qiniu_up_host]
           @qiniu_private_url_expires_in = options[:qiniu_private_url_expires_in] || 3600
-          @qiniu_callback_url  = options[:qiniu_callback_url] || ''
-          @qiniu_callback_body = options[:qiniu_callback_body] || ''
+          @qiniu_callback_url           = options[:qiniu_callback_url] || ''
+          @qiniu_callback_body          = options[:qiniu_callback_body] || ''
           @qiniu_persistent_notify_url  = options[:qiniu_persistent_notify_url] || ''
           init
         end
@@ -37,9 +37,9 @@ module CarrierWave
             @qiniu_expires_in,
             nil
           )
-          put_policy.persistent_ops = @qiniu_async_ops
-          put_policy.callback_url = @qiniu_callback_url if @qiniu_callback_url.present?
-          put_policy.callback_body = @qiniu_callback_body if @qiniu_callback_body.present?
+          put_policy.persistent_ops        = @qiniu_async_ops
+          put_policy.callback_url          = @qiniu_callback_url if @qiniu_callback_url.present?
+          put_policy.callback_body         = @qiniu_callback_body if @qiniu_callback_body.present?
           put_policy.persistent_notify_url = @qiniu_persistent_notify_url if @qiniu_persistent_notify_url.present?
 
           ::Qiniu::Storage.upload_with_put_policy(
@@ -89,7 +89,7 @@ module CarrierWave
             :user_agent => UserAgent
           }
           options[:block_size] = @qiniu_block_size if @qiniu_block_size
-          options[:up_host] = @qiniu_up_host if @qiniu_up_host
+          options[:up_host]    = @qiniu_up_host if @qiniu_up_host
 
           ::Qiniu.establish_connection! options
 
