@@ -93,5 +93,25 @@ require 'carrierwave/processing/mini_magick'
       open(photo.image.thumb.url).should_not be_nil
 
     end
+
+    it 'does copy from image works' do
+      f = load_file("mm.jpg")
+
+      photo = Photo.new(image: f)
+
+      photo.save
+
+      photo2 = Photo.new
+
+      photo2.image = photo.image
+
+      photo2.save
+
+      puts "The image was copied from #{photo.image.url} to #{photo2.image.url}"
+
+      expect(photo2.image.url).not_to eq(photo.image.url)
+
+      open(photo2.image.url).should_not be_nil
+    end
   end
 end
