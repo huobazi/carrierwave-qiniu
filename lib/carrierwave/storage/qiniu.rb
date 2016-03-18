@@ -50,6 +50,17 @@ module CarrierWave
 
         end
 
+        #
+        # @note 复制
+        # @param origin [String]
+        # @param target [String]
+        # @return [Boolean]
+        #
+        def copy(origin, target)
+          code, result, _ = ::Qiniu::Storage.copy(@qiniu_bucket, origin, @qiniu_bucket, target)
+          code == 200 ? result : nil
+        end
+
         def delete(key)
           ::Qiniu::Storage.delete(@qiniu_bucket, key) rescue nil
         end
@@ -117,6 +128,22 @@ module CarrierWave
 
         def delete
           qiniu_connection.delete(@path)
+        end
+
+
+
+        #
+        # @note 从指定路径复制图片
+        # @param origin_path [String] 原图片路径
+        # @return [Boolean]
+        #
+        def copy_from(origin_path)
+
+          # 先删除目标图片，避免出现0字节文件，无法复制
+          qiniu_connection.delete(@path)
+
+          qiniu_connection.copy(origin_path, @path)
+
         end
 
         ##
