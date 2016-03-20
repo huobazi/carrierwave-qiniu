@@ -1,6 +1,10 @@
 
 ## CHANGE LOG
 
+### v0.2.2
+增加对七牛SDK中复制图片功能的支持
+https://github.com/huobazi/carrierwave-qiniu/pull/49
+
 ### v0.2.1
 增加
 
