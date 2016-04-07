@@ -21,7 +21,7 @@ module CarrierWave
           @file.copy_from_path = new_file.path
 
         elsif new_file.kind_of? CarrierWave::Uploader::Base
-
+          return unless new_file.file.present?
           @file.copy_from_path = new_file.file.path
 
         end
