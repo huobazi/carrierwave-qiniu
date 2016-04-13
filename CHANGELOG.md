@@ -1,12 +1,19 @@
 
 ## CHANGE LOG
 
+### v0.2.3
+
+- Add extension method
+https://github.com/huobazi/carrierwave-qiniu/pull/50
+
 ### v0.2.2
-增加对七牛SDK中复制图片功能的支持
+
+- 增加对七牛SDK中复制图片功能的支持
 https://github.com/huobazi/carrierwave-qiniu/pull/49
 
 ### v0.2.1
-增加
+
+- 增加
 
     qiniu_callback_url
     qiniu_callback_body
