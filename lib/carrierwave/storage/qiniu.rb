@@ -165,6 +165,10 @@ module CarrierWave
           file_info['fsize'] || 0
         end
 
+        def extension
+          path.split('.').last
+        end
+
         private
 
         def qiniu_connection
