@@ -50,6 +50,8 @@ end
 
   config.qiniu_block_size    = 4*1024*1024
   config.qiniu_protocol      = "http"
+
+  config.qiniu_download_site = ENV['qiniu_download_site']
 end
 
 def load_file(fname)
@@ -60,4 +62,3 @@ end
 RSpec.configure do |config|
 
 end
-
