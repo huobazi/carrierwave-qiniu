@@ -21,6 +21,8 @@ module CarrierWave
         add_config :qiniu_up_host
         add_config :qiniu_private_url_expires_in
 
+        add_config :qiniu_download_site
+
         alias_config :qiniu_protocal, :qiniu_protocol
       end
 

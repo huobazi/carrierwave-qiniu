@@ -24,6 +24,9 @@ module CarrierWave
           @qiniu_callback_url           = options[:qiniu_callback_url] || ''
           @qiniu_callback_body          = options[:qiniu_callback_body] || ''
           @qiniu_persistent_notify_url  = options[:qiniu_persistent_notify_url] || ''
+
+          @qiniu_download_site  = options[:qiniu_download_site] || ''
+
           init
         end
 
@@ -77,7 +80,15 @@ module CarrierWave
 
         def download_url(path)
           encode_path = URI.escape(path) #fix chinese file name, same as encodeURIComponent in js but preserve slash '/'
-          primitive_url = "#{@qiniu_protocol}://#{@qiniu_bucket_domain}/#{encode_path}"
+          # primitive_url = "#{@qiniu_protocol}://#{@qiniu_bucket_domain}/#{encode_path}"
+
+          # distinct upload and download site.
+          if @qiniu_download_site.eql?('')
+            primitive_url = "#{@qiniu_protocol}://#{@qiniu_bucket_domain}/#{encode_path}"
+          else
+            primitive_url = "#{@qiniu_download_site}/#{encode_path}"
+          end
+
           @qiniu_bucket_private ? \
             ::Qiniu::Auth.authorize_download_url(primitive_url, :expires_in => @qiniu_private_url_expires_in) \
             : \
@@ -186,7 +197,9 @@ module CarrierWave
               :qiniu_private_url_expires_in => @uploader.qiniu_private_url_expires_in,
               :qiniu_callback_url  => @uploader.qiniu_callback_url,
               :qiniu_callback_body => @uploader.qiniu_callback_body,
-              :qiniu_persistent_notify_url  => @uploader.qiniu_persistent_notify_url
+              :qiniu_persistent_notify_url  => @uploader.qiniu_persistent_notify_url,
+
+              :qiniu_download_site    => @uploader.qiniu_download_site,
             }
 
             config[:qiniu_async_ops] = Array(@uploader.qiniu_async_ops).join(';') rescue ''
