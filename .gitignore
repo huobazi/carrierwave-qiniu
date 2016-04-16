@@ -18,3 +18,10 @@ test/tmp
 test/version_tmp
 tmp
 uploads/
+
+# RubyMine
+.idea/
+
+# RVM
+.ruby-version
+.ruby-gemset
