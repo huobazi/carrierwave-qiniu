@@ -46,10 +46,13 @@ end
   config.qiniu_secret_key    = ENV['qiniu_secret_key']
 
   config.qiniu_bucket        = ENV['qiniu_bucket']
+  config.qiniu_bucket_private = ENV['qiniu_bucket_private']
   config.qiniu_bucket_domain = ENV['qiniu_bucket_domain']
 
   config.qiniu_block_size    = 4*1024*1024
   config.qiniu_protocol      = "http"
+
+  config.qiniu_download_site = ENV['qiniu_download_site']
 end
 
 def load_file(fname)
@@ -60,4 +63,3 @@ end
 RSpec.configure do |config|
 
 end
-
