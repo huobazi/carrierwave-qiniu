@@ -78,7 +78,8 @@ class AvatarUploader < CarrierWave::Uploader::Base
 
 end
 ```
-You can see a example project on: https://github.com/huobazi/carrierwave-qiniu-example 
+You can see a example project on: https://github.com/huobazi/carrierwave-qiniu-example
+
 or see the spec test on https://github.com/huobazi/carrierwave-qiniu/blob/master/spec/upload_spec.rb
 
 ## Contributing
