@@ -72,6 +72,25 @@ require 'carrierwave/processing/mini_magick'
   end
 
   context "Upload Image" do
+    it "should save failed" do
+      class WrongUploader < PhotoUploader
+        self.qiniu_bucket = 'not_exists'
+      end
+
+      class Photo < ActiveRecord::Base
+        mount_uploader :image, WrongUploader
+      end
+
+      f = load_file("mm.jpg")
+      photo = Photo.new(:image => f)
+      photo.save
+      expect(photo).to_not be_valid
+
+      expect {
+        photo.save!
+      }.to raise_error
+    end
+
     it "does upload image" do
       f = load_file("mm.jpg")
       photo = Photo.new(:image => f)
