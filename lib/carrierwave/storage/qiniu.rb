@@ -210,7 +210,7 @@ module CarrierWave
 
       def store!(file)
         f = ::CarrierWave::Storage::Qiniu::File.new(uploader, uploader.store_path(uploader.filename))
-        if file && file.copy_from_path
+        if file && file.respond_to?(:copy_from_path) and file.copy_from_path
           f.copy_from file.copy_from_path
         else
           f.store(file)
