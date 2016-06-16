@@ -1,6 +1,6 @@
 # Carrierwave::Qiniu
 
-[![Gem Version](https://badge.fury.io/rb/carrierwave-qiniu@2x.png?0.2.3)](http://badge.fury.io/rb/carrierwave-qiniu)
+[![Gem Version](https://badge.fury.io/rb/carrierwave-qiniu@2x.png?0.2.4)](http://badge.fury.io/rb/carrierwave-qiniu)
 
 This gem adds storage support for [Qiniu](http://qiniutek.com) to [Carrierwave](https://github.com/jnicklas/carrierwave)
 example: https://github.com/huobazi/carrierwave-qiniu-example
