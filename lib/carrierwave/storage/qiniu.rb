@@ -42,12 +42,16 @@ module CarrierWave
           put_policy.callback_body         = @qiniu_callback_body if @qiniu_callback_body.present?
           put_policy.persistent_notify_url = @qiniu_persistent_notify_url if @qiniu_persistent_notify_url.present?
 
-          ::Qiniu::Storage.upload_with_put_policy(
-            put_policy,
-            file.path,
-            key
-          )
+          resp_code, resp_body, resp_headers =
+            ::Qiniu::Storage.upload_with_put_policy(
+              put_policy,
+              file.path,
+              key
+            )
 
+          if resp_code < 200 or resp_code >= 300
+            raise ::CarrierWave::UploadError, "Upload failed, status code: #{resp_code}, response: #{resp_body}"
+          end
         end
 
         #
@@ -58,7 +62,9 @@ module CarrierWave
         #
         def copy(origin, target)
           code, result, _ = ::Qiniu::Storage.copy(@qiniu_bucket, origin, @qiniu_bucket, target)
-          code == 200 ? result : nil
+          if resp_code < 200 or resp_code >= 300
+            raise ::CarrierWave::IntegrityError, "Copy failed, status code: #{resp_code}, response: #{resp_body}"
+          end
         end
 
         def delete(key)
@@ -204,7 +210,7 @@ module CarrierWave
 
       def store!(file)
         f = ::CarrierWave::Storage::Qiniu::File.new(uploader, uploader.store_path(uploader.filename))
-        if file && file.copy_from_path
+        if file && file.respond_to?(:copy_from_path) and file.copy_from_path
           f.copy_from file.copy_from_path
         else
           f.store(file)
