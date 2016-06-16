@@ -1,6 +1,11 @@
 
 ## CHANGE LOG
 
+### v0.2.4
+
+- Add test for upload failed
+https://github.com/huobazi/carrierwave-qiniu/pull/57
+
 ### v0.2.3
 
 - Add extension method
