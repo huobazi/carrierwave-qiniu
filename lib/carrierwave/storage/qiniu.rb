@@ -46,7 +46,9 @@ module CarrierWave
             ::Qiniu::Storage.upload_with_put_policy(
               put_policy,
               file.path,
-              key
+              key,
+              nil,
+              bucket: @qiniu_bucket
             )
 
           if resp_code < 200 or resp_code >= 300
