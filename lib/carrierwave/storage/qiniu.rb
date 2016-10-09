@@ -63,7 +63,7 @@ module CarrierWave
         # @return [Boolean]
         #
         def copy(origin, target)
-          code, result, _ = ::Qiniu::Storage.copy(@qiniu_bucket, origin, @qiniu_bucket, target)
+          resp_code, resp_body, _ = ::Qiniu::Storage.copy(@qiniu_bucket, origin, @qiniu_bucket, target)
           if resp_code < 200 or resp_code >= 300
             raise ::CarrierWave::IntegrityError, "Copy failed, status code: #{resp_code}, response: #{resp_body}"
           end
