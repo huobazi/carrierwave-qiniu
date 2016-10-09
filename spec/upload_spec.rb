@@ -132,5 +132,22 @@ require 'carrierwave/processing/mini_magick'
 
       open(photo2.image.url).should_not be_nil
     end
+
+    it 'file exists return true' do
+      f = load_file("mm.jpg")
+      photo = Photo.new(image: f)
+      photo.save
+
+      expect(photo.image.file.exists?).to eq(true)
+    end
+
+    it 'file exists return false' do
+      f = load_file("mm.jpg")
+      photo = Photo.new(image: f)
+      photo.save
+      photo.image.remove!
+
+      expect(photo.image.file.exists?).to eq(false)
+    end
   end
 end

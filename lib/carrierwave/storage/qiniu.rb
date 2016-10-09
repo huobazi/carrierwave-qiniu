@@ -138,7 +138,10 @@ module CarrierWave
           qiniu_connection.delete(@path)
         end
 
-
+        def exists?
+          return true if qiniu_connection.stat(path).present?
+          false
+        end
 
         #
         # @note 从指定路径复制图片
