@@ -4,6 +4,7 @@
 ### v0.2.5
 
 https://github.com/huobazi/carrierwave-qiniu/pull/61
+
 https://github.com/huobazi/carrierwave-qiniu/pull/62
 
 
