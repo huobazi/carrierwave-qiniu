@@ -1,6 +1,12 @@
 
 ## CHANGE LOG
 
+### v0.2.6
+
+- 提供图片样式的便利方法
+https://github.com/huobazi/qiniu_direct_uploader/pull/68
+
+
 ### v0.2.5
 
 https://github.com/huobazi/carrierwave-qiniu/pull/61
