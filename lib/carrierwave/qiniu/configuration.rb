@@ -20,11 +20,30 @@ module CarrierWave
         add_config :qiniu_expires_in
         add_config :qiniu_up_host
         add_config :qiniu_private_url_expires_in
+        add_config :qiniu_style_separator
 
         alias_config :qiniu_protocal, :qiniu_protocol
+
+        reset_qiniu_config
       end
 
       module ClassMethods
+        # Set default value
+        def reset_qiniu_config
+          configure do |config|
+            config.qiniu_protocol = 'http'
+            config.qiniu_bucket_private = false
+            config.qiniu_block_size = 1024*1024*4
+            config.qiniu_async_ops = ''
+            config.qiniu_can_overwrite = false
+            config.qiniu_private_url_expires_in = 3600
+            config.qiniu_callback_url = ''
+            config.qiniu_callback_body = ''
+            config.qiniu_persistent_notify_url = ''
+            config.qiniu_style_separator = '-'
+          end
+        end
+
         def alias_config(new_name, old_name)
           class_eval <<-RUBY, __FILE__, __LINE__ + 1
           def self.#{new_name}(value=nil)

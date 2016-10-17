@@ -77,12 +77,15 @@ require 'carrierwave/processing/mini_magick'
         self.qiniu_bucket = 'not_exists'
       end
 
-      class Photo < ActiveRecord::Base
+      class WrongPhoto < ActiveRecord::Base
+        self.table_name = 'photos'
+
         mount_uploader :image, WrongUploader
       end
 
       f = load_file("mm.jpg")
-      photo = Photo.new(:image => f)
+      photo = WrongPhoto.new(:image => f)
+      # FIXME: also raise error, see: CarrierWave::Qiniu#store L54
       photo.save
       expect(photo).to_not be_valid
 
@@ -149,5 +152,91 @@ require 'carrierwave/processing/mini_magick'
 
       expect(photo.image.file.exists?).to eq(false)
     end
+  end
+
+  context "Styles" do
+
+    context 'array styles' do
+      class ArrayStylesUploader < CarrierWave::Uploader::Base
+        qiniu_styles [:thumb]
+
+        def store_dir
+          "carrierwave-qiniu-spec"
+        end
+      end
+
+      class ArrayStyledPhoto < ActiveRecord::Base
+        self.table_name = 'photos'
+
+        mount_uploader :image, ArrayStylesUploader
+      end
+
+      it 'style url' do
+        f = load_file("mm.jpg")
+        photo = ArrayStyledPhoto.new(image: f)
+        photo.save
+        photo.errors.count.should == 0
+
+        expect(photo.image.url).not_to be_nil
+        puts photo.image.url('thumb')
+        expect(photo.image.url('thumb').end_with?("mm.jpg-thumb")).to eq true
+      end
+    end
+
+    context "Hash styles" do
+      class HashStylesUploader < CarrierWave::Uploader::Base
+        qiniu_styles thumb: "imageView2/0/w/200"
+
+        def store_dir
+          "carrierwave-qiniu-spec"
+        end
+      end
+
+      class HashStyledPhoto < ActiveRecord::Base
+        self.table_name = 'photos'
+
+        mount_uploader :image, HashStylesUploader
+      end
+
+      it 'style url' do
+        f = load_file("mm.jpg")
+        photo = HashStyledPhoto.new(image: f)
+        photo.save
+        photo.errors.count.should == 0
+
+        expect(photo.image.url).not_to be_nil
+        puts photo.image.url('thumb')
+        expect(photo.image.url('thumb').end_with?("mm.jpg-thumb")).to eq true
+      end
+
+      it 'inline style url' do
+        f = load_file("mm.jpg")
+        photo = HashStyledPhoto.new(image: f)
+        photo.save
+        puts photo.image.url('thumb', inline: true)
+        expect(photo.image.url('thumb', inline: true).end_with?("mm.jpg?imageView2/0/w/200")).to eq true
+      end
+    end
+
+    context "Only Style param" do
+      class StylesUploader < CarrierWave::Uploader::Base
+        qiniu_styles
+      end
+
+      class StyledPhoto < ActiveRecord::Base
+        self.table_name = 'photos'
+
+        mount_uploader :image, StylesUploader
+      end
+
+      it 'url' do
+        f = load_file("mm.jpg")
+        photo = StyledPhoto.new(image: f)
+        photo.save
+        puts photo.image.url(style: 'imageView2/0/w/200')
+        expect(photo.image.url(style: 'imageView2/0/w/200').end_with?("mm.jpg?imageView2/0/w/200")).to eq true
+      end
+    end
+
   end
 end
