@@ -80,7 +80,7 @@ end
 ```
 
 You can use [qiniu image styles](https://qiniu.kf5.com/hc/kb/article/68884/) instead [version](https://github.com/carrierwaveuploader/carrierwave#adding-versions) processing of CarrierWave.
-```
+```ruby
 # Case 1
 class AvatarUploader < CarrierWave::Uploader::Base
   storage :qiniu
