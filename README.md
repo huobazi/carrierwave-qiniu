@@ -78,6 +78,44 @@ class AvatarUploader < CarrierWave::Uploader::Base
 
 end
 ```
+
+You can use [qiniu image styles](https://qiniu.kf5.com/hc/kb/article/68884/) instead [version](https://github.com/carrierwaveuploader/carrierwave#adding-versions) processing of CarrierWave.
+```
+# Case 1
+class AvatarUploader < CarrierWave::Uploader::Base
+  storage :qiniu
+
+  qiniu_styles [:thumb, :large]
+end
+
+# original url
+user.avatar.url
+
+# thumb url
+user.avatar.url(:thumb)
+# http://.../avatar.jpg-thumb
+
+
+# Case 2
+class AvatarUploader < CarrierWave::Uploader::Base
+  storage :qiniu
+
+  qiniu_styles thumb: 'imageView2/1/w/200', large: 'imageView2/1/w/800'
+end
+
+# thumb url
+user.avatar.url(:thumb)
+# http://.../avatar.jpg-thumb
+
+# inline thubm url
+user.avatar.url(:thumb, inline: true)
+# http://.../avatar.jpg?imageView2/1/w/200
+
+# just style param
+user.avatar.url(style: 'imageView2/1/w/200')
+# http://.../avatar.jpg?imageView2/1/w/200
+```
+
 You can see a example project on: https://github.com/huobazi/carrierwave-qiniu-example
 
 or see the spec test on https://github.com/huobazi/carrierwave-qiniu/blob/master/spec/upload_spec.rb
