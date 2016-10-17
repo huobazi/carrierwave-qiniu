@@ -24,6 +24,7 @@ module CarrierWave
           @qiniu_callback_url           = options[:qiniu_callback_url] || ''
           @qiniu_callback_body          = options[:qiniu_callback_body] || ''
           @qiniu_persistent_notify_url  = options[:qiniu_persistent_notify_url] || ''
+          @qiniu_style_separator        = options[:qiniu_style_separator] || '-'
           init
         end
 
@@ -197,7 +198,8 @@ module CarrierWave
               :qiniu_private_url_expires_in => @uploader.qiniu_private_url_expires_in,
               :qiniu_callback_url  => @uploader.qiniu_callback_url,
               :qiniu_callback_body => @uploader.qiniu_callback_body,
-              :qiniu_persistent_notify_url  => @uploader.qiniu_persistent_notify_url
+              :qiniu_persistent_notify_url  => @uploader.qiniu_persistent_notify_url,
+              :qiniu_style_separator => @uploader.qiniu_style_separator
             }
 
             config[:qiniu_async_ops] = Array(@uploader.qiniu_async_ops).join(';') rescue ''
