@@ -131,6 +131,19 @@ end
 
 user.avatar.url(:thumb)
 # http://.../avatar.jpg?imageView2/1/w/200
+
+# Case 4: Custom styles and bucket
+class AvatarUploader < CarrierWave::Uploader::Base
+  storage :qiniu
+
+  # Override default styles and use your own
+  use_qiniu_styles :thumb => 'imageView/0/w/400', :xlarge => 'imageView/0/w/1600'
+  qiniu_bucket        = 'another_bucket'
+  qiniu_bucket_domain = 'another_domain'
+end
+
+user.avatar.url(:thumb, inline: true)
+# http://.../avatar.jpg?imageView2/1/w/400
 ```
 
 You can see a example project on: https://github.com/huobazi/carrierwave-qiniu-example

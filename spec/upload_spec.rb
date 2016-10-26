@@ -165,6 +165,16 @@ require 'carrierwave/processing/mini_magick'
       mount_uploader :image, StylesUploader
     end
 
+    class CustomStylesUploader < CarrierWave::Uploader::Base
+      use_qiniu_styles thumb2: 'imageView2/0/w/200'
+    end
+
+    class CustomStyledPhoto < ActiveRecord::Base
+      self.table_name = 'photos'
+
+      mount_uploader :image, CustomStylesUploader
+    end
+
     let(:photo) {
       f = load_file("mm.jpg")
       photo = StyledPhoto.new(image: f)
@@ -227,5 +237,40 @@ require 'carrierwave/processing/mini_magick'
       end
     end
 
+    context "Custom styles" do
+      let(:custom_photo) {
+        f = load_file("mm.jpg")
+        photo = CustomStyledPhoto.new(image: f)
+        photo.save
+        photo
+      }
+
+      it 'override default styles' do
+        photo = custom_photo
+        expect(CustomStylesUploader.qiniu_styles).to eq({ thumb2: 'imageView2/0/w/200' })
+        # Version thumb doesn't exist!
+        expect { photo.image.url('thumb') }.to raise_error
+      end
+
+      it 'style url' do
+        photo = custom_photo
+        expect(photo.image.url).not_to be_nil
+        puts photo.image.url('thumb2')
+        expect(photo.image.url('thumb2').end_with?("mm.jpg-thumb2")).to eq true
+      end
+
+      it 'inline style url' do
+        photo = custom_photo
+        puts photo.image.url('thumb2', inline: true)
+        expect(photo.image.url('thumb2', inline: true).end_with?("mm.jpg?imageView2/0/w/200")).to eq true
+      end
+
+      it 'global inline mode' do
+        photo = custom_photo
+        CarrierWave.configure {|config| config.qiniu_style_inline = true }
+        expect(photo.image.url('thumb2', inline: true).end_with?("mm.jpg?imageView2/0/w/200")).to eq true
+        CarrierWave.configure {|config| config.qiniu_style_inline = false }
+      end
+    end
   end
 end

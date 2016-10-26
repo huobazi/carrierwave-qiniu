@@ -15,9 +15,13 @@ module CarrierWave
         #    end
         #
         #    # Eanble qiniu styles otherwise default version processing
+        #    # And use default styles
         #    use_qiniu_styles
         #
-        def use_qiniu_styles
+        #    # Override default styles and use your own styles
+        #    use_qniu_styles :thumbnail => 'imageView/0/w/400', :xlarge => 'imageView/0/w/1600'
+        #
+        def use_qiniu_styles(versions = nil)
 
           # Override #url method when set styles, otherwise still default strategy.
           unless include? ::CarrierWave::Qiniu::Url
@@ -28,6 +32,10 @@ module CarrierWave
           if self.qiniu_styles
             # Set default styles
             @_qiniu_styles = parse_qiniu_styles(self.qiniu_styles)
+          elsif versions
+            # Set custom styles
+            self.qiniu_styles = versions
+            @_qiniu_styles = parse_qiniu_styles(versions)
           end
         end
 
