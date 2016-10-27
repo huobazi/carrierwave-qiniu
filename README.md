@@ -1,6 +1,6 @@
 # Carrierwave::Qiniu
 
-[![Gem Version](https://badge.fury.io/rb/carrierwave-qiniu@2x.png?0.2.6)](http://badge.fury.io/rb/carrierwave-qiniu)
+[![Gem Version](https://badge.fury.io/rb/carrierwave-qiniu@2x.png?1.0.0)](http://badge.fury.io/rb/carrierwave-qiniu)
 
 This gem adds storage support for [Qiniu](http://qiniutek.com) to [Carrierwave](https://github.com/jnicklas/carrierwave)
 example: https://github.com/huobazi/carrierwave-qiniu-example
@@ -9,7 +9,7 @@ example: https://github.com/huobazi/carrierwave-qiniu-example
 
 Add this line to your application's Gemfile:
 
-    gem 'carrierwave-qiniu'
+    gem 'carrierwave-qiniu', '~> 1.0.0'
 
 And then execute:
 
@@ -80,6 +80,7 @@ end
 ```
 
 You can use [qiniu image styles](https://qiniu.kf5.com/hc/kb/article/68884/) instead [version](https://github.com/carrierwaveuploader/carrierwave#adding-versions) processing of CarrierWave.
+
 ```ruby
 # Case 1: Array styles
 CarrierWave.configure do |config|
@@ -138,14 +139,25 @@ class AvatarUploader < CarrierWave::Uploader::Base
 
   # Override default styles and use your own
   use_qiniu_styles :thumb => 'imageView/0/w/400', :xlarge => 'imageView/0/w/1600'
-  qiniu_bucket        = 'another_bucket'
-  qiniu_bucket_domain = 'another_domain'
+
+  self.qiniu_bucket                = "avatars"
+  self.qiniu_bucket_domain         = "avatars.files.example.com"
+
 end
 
 user.avatar.url(:thumb, inline: true)
 # http://.../avatar.jpg?imageView2/1/w/400
-```
 
+```
+Sync Qiniu styles of uploader
+
+```
+$ rake carrierwave:qiniu:sync_styles
+
+# Bucket: bucket_name_1, Set style: thumb => imageView2/1/w/200
+# Bucket: bucket_name_2, Set style: large => imageView2/1/w/800
+
+```
 You can see a example project on: https://github.com/huobazi/carrierwave-qiniu-example
 
 or see the spec test on https://github.com/huobazi/carrierwave-qiniu/blob/master/spec/upload_spec.rb

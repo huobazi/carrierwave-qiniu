@@ -1,6 +1,17 @@
 
 ## CHANGE LOG
 
+### v1.0.0
+
+- 变更图片样式的用法
+https://github.com/huobazi/carrierwave-qiniu/pull/70
+
+- 不兼容上一版本
+
+``` qiniu_styles ``` 移动到 config 中
+在 uploader 内 使用 ``` use_qiniu_styles ``` 来指定使用默认 styles 或者 覆盖默认配置
+详见 ReadMe 中的示例
+
 ### v0.2.6
 
 - 提供图片样式的便利方法
