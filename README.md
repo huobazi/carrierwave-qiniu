@@ -81,11 +81,15 @@ end
 
 You can use [qiniu image styles](https://qiniu.kf5.com/hc/kb/article/68884/) instead [version](https://github.com/carrierwaveuploader/carrierwave#adding-versions) processing of CarrierWave.
 ```ruby
-# Case 1
+# Case 1: Array styles
+CarrierWave.configure do |config|
+  config.qiniu_styles = [:thumb, :large]
+end
+
 class AvatarUploader < CarrierWave::Uploader::Base
   storage :qiniu
 
-  qiniu_styles [:thumb, :large]
+  use_qiniu_styles
 end
 
 # original url
@@ -96,11 +100,9 @@ user.avatar.url(:thumb)
 # http://.../avatar.jpg-thumb
 
 
-# Case 2
-class AvatarUploader < CarrierWave::Uploader::Base
-  storage :qiniu
-
-  qiniu_styles thumb: 'imageView2/1/w/200', large: 'imageView2/1/w/800'
+# Case 2: Hash styles
+CarrierWave.configure do |config|
+  config.qiniu_styles = { thumb: 'imageView2/1/w/200', large: 'imageView2/1/w/800' }
 end
 
 # thumb url
@@ -114,6 +116,34 @@ user.avatar.url(:thumb, inline: true)
 # just style param
 user.avatar.url(style: 'imageView2/1/w/200')
 # http://.../avatar.jpg?imageView2/1/w/200
+
+# Case 3: Inline all styles in development environment
+CarrierWave.configure do |config|
+  config.qiniu_styles = { thumb: 'imageView2/1/w/200', large: 'imageView2/1/w/800' }
+  config.qiniu_style_inline = true if Rails.env.development?
+end
+
+class AvatarUploader < CarrierWave::Uploader::Base
+  storage :qiniu
+
+  use_qiniu_styles
+end
+
+user.avatar.url(:thumb)
+# http://.../avatar.jpg?imageView2/1/w/200
+
+# Case 4: Custom styles and bucket
+class AvatarUploader < CarrierWave::Uploader::Base
+  storage :qiniu
+
+  # Override default styles and use your own
+  use_qiniu_styles :thumb => 'imageView/0/w/400', :xlarge => 'imageView/0/w/1600'
+  qiniu_bucket        = 'another_bucket'
+  qiniu_bucket_domain = 'another_domain'
+end
+
+user.avatar.url(:thumb, inline: true)
+# http://.../avatar.jpg?imageView2/1/w/400
 ```
 
 You can see a example project on: https://github.com/huobazi/carrierwave-qiniu-example
