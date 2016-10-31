@@ -43,10 +43,11 @@ https://github.com/huobazi/carrierwave-qiniu/pull/49
 ### v0.2.1
 
 - 增加
-
+```
     qiniu_callback_url
     qiniu_callback_body
     qiniu_can_overwrite
+```
 
 https://github.com/huobazi/carrierwave-qiniu/pull/47
 
