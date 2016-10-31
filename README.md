@@ -3,6 +3,7 @@
 [![Gem Version](https://badge.fury.io/rb/carrierwave-qiniu@2x.png?1.0.0)](http://badge.fury.io/rb/carrierwave-qiniu)
 
 This gem adds storage support for [Qiniu](http://qiniutek.com) to [Carrierwave](https://github.com/jnicklas/carrierwave)
+
 example: https://github.com/huobazi/carrierwave-qiniu-example
 
 ## Installation
@@ -17,7 +18,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install carrierwave-qiniu
+    $ gem install carrierwave-qiniu -v 1.0.0
 
 ## Usage
 
@@ -140,8 +141,8 @@ class AvatarUploader < CarrierWave::Uploader::Base
   # Override default styles and use your own
   use_qiniu_styles :thumb => 'imageView/0/w/400', :xlarge => 'imageView/0/w/1600'
 
-  self.qiniu_bucket                = "avatars"
-  self.qiniu_bucket_domain         = "avatars.files.example.com"
+  self.qiniu_bucket        = "avatars"
+  self.qiniu_bucket_domain = "avatars.files.example.com"
 
 end
 
