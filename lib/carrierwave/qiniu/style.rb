@@ -5,7 +5,7 @@ module CarrierWave
     module Style
       extend ActiveSupport::Concern
 
-      class_methods do
+      module ClassMethods
         # === Examples:
         #
         #    CarrierWave.configure do |config|
