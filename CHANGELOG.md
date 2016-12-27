@@ -1,6 +1,13 @@
 
 ## CHANGE LOG
 
+### v1.0.1
+
+- 使用 module ClassMethods 以兼容 Rails4
+https://github.com/huobazi/carrierwave-qiniu/issues/71
+
+https://github.com/huobazi/carrierwave-qiniu/pull/72
+
 ### v1.0.0
 
 - 变更图片样式的用法
