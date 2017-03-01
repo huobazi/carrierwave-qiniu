@@ -3,6 +3,12 @@
 
 ### v1.0.1
 
+- Require carrierwave ~> 1.0
+- 
+https://github.com/huobazi/carrierwave-qiniu/pull/73
+
+### v1.0.1
+
 - 使用 module ClassMethods 以兼容 Rails4
 
 https://github.com/huobazi/carrierwave-qiniu/issues/71
