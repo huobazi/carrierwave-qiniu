@@ -1,7 +1,7 @@
 
 ## CHANGE LOG
 
-### v1.1.1
+### v1.1.0
 
 - Require carrierwave ~> 1.0
 - 
