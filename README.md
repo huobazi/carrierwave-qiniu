@@ -8,9 +8,11 @@ example: https://github.com/huobazi/carrierwave-qiniu-example
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Add the following to your application's Gemfile:
 
     gem 'carrierwave-qiniu', '~> 1.0.1'
+    # If you need to use locales other than English
+    gem 'carrierwave-i18n'
 
 And then execute:
 
