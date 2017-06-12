@@ -24,7 +24,7 @@ Or install it yourself as:
 
 ## Usage
 
-You'll need to configure it in config/initializes/carrierwave.rb
+You'll need to configure it in config/initializers/carrierwave.rb
 
 ```ruby
 ::CarrierWave.configure do |config|
