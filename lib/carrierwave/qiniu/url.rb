@@ -11,10 +11,12 @@ module CarrierWave
         return super if args.empty?
 
         # Usage: avatar.url(style: 'imageView/0/w/200')
+        url = super({})
+        return unless url
+
         if args.first.is_a? Hash
           options = args.first
           if options[:style]
-            url = super({})
             return "#{url}?#{options[:style]}"
           end
         else
@@ -24,7 +26,6 @@ module CarrierWave
             options = args.last
 
             # TODO: handle private url
-            url = super({})
             # Usage: avatar.url(:version, inline: true)
             if options.present? && options.is_a?(Hash) && options[:inline] && styles[version]
               return "#{url}?#{styles[version]}"
