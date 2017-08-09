@@ -127,8 +127,19 @@ module CarrierWave
           @path
         end
 
-        def url
-          qiniu_connection.download_url(@path)
+        ##
+        # Return qiniu URl, maybe with style
+        #
+        # === Parameters
+        # [options (Hash)] optional options hash, 图片样式 { version: :thumb } 或者 { style: "imageView2/1/w/200" }
+        #
+        # === Returns
+        #
+        # [String]
+        #
+        def url(options = {})
+          path = options.present? ? path_with_style(options) : @path
+          qiniu_connection.download_url(path)
         end
 
         def store(file)
@@ -211,6 +222,18 @@ module CarrierWave
 
         def file_info
           @file_info ||= qiniu_connection.stat(@path)
+        end
+
+        def path_with_style(options)
+          return @path unless options
+
+          if version = options[:version]
+            "#{@path}#{@uploader.class.qiniu_style_separator}#{version}"
+          elsif style = options[:style]
+            "#{@path}?#{style}"
+          else
+            @path
+          end
         end
 
       end
