@@ -4,7 +4,7 @@
 ### v1.1.2
 
 Fix:
-https://github.com/huobazi/carrierwave-qiniu/pull/78
+https://github.com/huobazi/carrierwave-qiniu/pull/79
 
 ### v1.1.1
 
