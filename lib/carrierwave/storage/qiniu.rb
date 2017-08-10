@@ -16,15 +16,17 @@ module CarrierWave
           @qiniu_secret_key             = options[:qiniu_secret_key]
           @qiniu_block_size             = options[:qiniu_block_size] || 1024*1024*4
           @qiniu_protocol               = options[:qiniu_protocol] || "http"
-          @qiniu_async_ops              = options[:qiniu_async_ops] || ''
+          @qiniu_persistent_ops         = options[:qiniu_persistent_ops] || options[:qiniu_async_ops] || ''
+          @qiniu_persistent_pipeline    = options[:qiniu_persistent_pipeline] || ''
+          @qiniu_persistent_notify_url  = options[:qiniu_persistent_notify_url] || ''
           @qiniu_can_overwrite          = options[:qiniu_can_overwrite] || false
           @qiniu_expires_in             = options[:qiniu_expires_in] || options[:expires_in] || 3600
           @qiniu_up_host                = options[:qiniu_up_host]
           @qiniu_private_url_expires_in = options[:qiniu_private_url_expires_in] || 3600
           @qiniu_callback_url           = options[:qiniu_callback_url] || ''
           @qiniu_callback_body          = options[:qiniu_callback_body] || ''
-          @qiniu_persistent_notify_url  = options[:qiniu_persistent_notify_url] || ''
           @qiniu_style_separator        = options[:qiniu_style_separator] || '-'
+          @qiniu_delete_after_days      = options[:qiniu_delete_after_days]
           init
         end
 
@@ -38,10 +40,12 @@ module CarrierWave
             @qiniu_expires_in,
             nil
           )
-          put_policy.persistent_ops        = @qiniu_async_ops
+
           put_policy.callback_url          = @qiniu_callback_url if @qiniu_callback_url.present?
           put_policy.callback_body         = @qiniu_callback_body if @qiniu_callback_body.present?
+          put_policy.persistent_ops        = @qiniu_persistent_ops || @qiniu_async_ops
           put_policy.persistent_notify_url = @qiniu_persistent_notify_url if @qiniu_persistent_notify_url.present?
+          put_policy.persistent_pipeline   = @persistent_pipeline
 
           resp_code, resp_body, resp_headers =
             ::Qiniu::Storage.upload_with_put_policy(
@@ -50,11 +54,11 @@ module CarrierWave
               key,
               nil,
               bucket: @qiniu_bucket
-            )
+          )
 
-          if resp_code < 200 or resp_code >= 300
-            raise ::CarrierWave::UploadError, "Upload failed, status code: #{resp_code}, response: #{resp_body}"
-          end
+            if resp_code < 200 or resp_code >= 300
+              raise ::CarrierWave::UploadError, "Upload failed, status code: #{resp_code}, response: #{resp_body}"
+            end
         end
 
         #
@@ -185,28 +189,29 @@ module CarrierWave
 
         def qiniu_connection
           @qiniu_connection ||= begin
-            config = {
-              :qiniu_access_key    => @uploader.qiniu_access_key,
-              :qiniu_secret_key    => @uploader.qiniu_secret_key,
-              :qiniu_bucket        => @uploader.qiniu_bucket,
-              :qiniu_bucket_domain => @uploader.qiniu_bucket_domain,
-              :qiniu_bucket_private=> @uploader.qiniu_bucket_private,
-              :qiniu_block_size    => @uploader.qiniu_block_size,
-              :qiniu_protocol      => @uploader.qiniu_protocol,
-              :qiniu_expires_in    => @uploader.qiniu_expires_in,
-              :qiniu_up_host       => @uploader.qiniu_up_host,
-              :qiniu_private_url_expires_in => @uploader.qiniu_private_url_expires_in,
-              :qiniu_callback_url  => @uploader.qiniu_callback_url,
-              :qiniu_callback_body => @uploader.qiniu_callback_body,
-              :qiniu_persistent_notify_url  => @uploader.qiniu_persistent_notify_url,
-              :qiniu_style_separator => @uploader.qiniu_style_separator
-            }
+                                  config = {
+                                    :qiniu_access_key             => @uploader.qiniu_access_key,
+                                    :qiniu_secret_key             => @uploader.qiniu_secret_key,
+                                    :qiniu_bucket                 => @uploader.qiniu_bucket,
+                                    :qiniu_bucket_domain          => @uploader.qiniu_bucket_domain,
+                                    :qiniu_bucket_private         => @uploader.qiniu_bucket_private,
+                                    :qiniu_block_size             => @uploader.qiniu_block_size,
+                                    :qiniu_protocol               => @uploader.qiniu_protocol,
+                                    :qiniu_expires_in             => @uploader.qiniu_expires_in,
+                                    :qiniu_up_host                => @uploader.qiniu_up_host,
+                                    :qiniu_private_url_expires_in => @uploader.qiniu_private_url_expires_in,
+                                    :qiniu_callback_url           => @uploader.qiniu_callback_url,
+                                    :qiniu_callback_body          => @uploader.qiniu_callback_body,
+                                    :qiniu_persistent_notify_url  => @uploader.qiniu_persistent_notify_url,
+                                    :qiniu_persistent_pipeline    => @uploader.qiniu_persistent_pipeline,
+                                    :qiniu_style_separator        => @uploader.qiniu_style_separator
+                                  }
 
-            config[:qiniu_async_ops] = Array(@uploader.qiniu_async_ops).join(';') rescue ''
-            config[:qiniu_can_overwrite] = @uploader.try :qiniu_can_overwrite rescue false
+                                  config[:qiniu_persistent_ops] = Array(@uploader.qiniu_persistent_ops || @uploader.qiniu_async_ops).join(';') rescue ''
+                                  config[:qiniu_can_overwrite]  = @uploader.try :qiniu_can_overwrite rescue false
 
-            Connection.new config
-          end
+                                  Connection.new config
+                                end
         end
 
         def file_info

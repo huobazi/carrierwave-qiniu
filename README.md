@@ -1,6 +1,6 @@
 # Carrierwave::Qiniu
 
-[![Gem Version](https://badge.fury.io/rb/carrierwave-qiniu@2x.png?1.1.1)](http://badge.fury.io/rb/carrierwave-qiniu)
+[![Gem Version](https://badge.fury.io/rb/carrierwave-qiniu@2x.png?1.1.2)](http://badge.fury.io/rb/carrierwave-qiniu)
 
 This gem adds storage support for [Qiniu](http://qiniutek.com) to [Carrierwave](https://github.com/jnicklas/carrierwave)
 
@@ -10,7 +10,7 @@ example: https://github.com/huobazi/carrierwave-qiniu-example
 
 Add the following to your application's Gemfile:
 
-    gem 'carrierwave-qiniu', '~> 1.1.1'
+    gem 'carrierwave-qiniu', '~> 1.1.2'
     # If you need to use locales other than English
     gem 'carrierwave-i18n'
 
@@ -20,7 +20,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install carrierwave-qiniu -v 1.1.1
+    $ gem install carrierwave-qiniu -v 1.1.2
 
 ## Usage
 
@@ -67,15 +67,13 @@ class AvatarUploader < CarrierWave::Uploader::Base
   self.qiniu_persistent_notify_url = "http://<ip>/notify"
 
     # 指定预转数据处理命令
-    # https://github.com/qiniu/ruby-sdk/issues/48
-    # http://docs.qiniu.com/api/put.html#uploadToken
-    # http://docs.qiniutek.com/v3/api/io/#uploadToken-asyncOps
-    # http://developer.qiniu.com/docs/v6/api/reference/security/put-policy.html#put-policy-persistent-ops-explanation
-    def qiniu_async_ops
+    # https://developer.qiniu.com/kodo/manual/1206/put-policy#2
+    def qiniu_persistent_ops
       commands = []
-      %W(small little middle large).each do |style|
-        commands << "http://#{self.qiniu_bucket_domain}/#{self.store_dir}/#{self.filename}/#{style}"
-      end
+
+      commands << "avthumb/mp4"
+      commands << "avthumb/m3u8/noDomain/1/segtime/15/vb/440k"
+
       commands
     end
 
