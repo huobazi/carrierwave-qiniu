@@ -1,6 +1,6 @@
 # Carrierwave::Qiniu
 
-[![Gem Version](https://badge.fury.io/rb/carrierwave-qiniu@2x.png?1.1.2)](http://badge.fury.io/rb/carrierwave-qiniu)
+[![Gem Version](https://badge.fury.io/rb/carrierwave-qiniu@2x.png?1.1.3)](http://badge.fury.io/rb/carrierwave-qiniu)
 
 This gem adds storage support for [Qiniu](http://qiniutek.com) to [Carrierwave](https://github.com/jnicklas/carrierwave)
 
@@ -10,7 +10,7 @@ example: https://github.com/huobazi/carrierwave-qiniu-example
 
 Add the following to your application's Gemfile:
 
-    gem 'carrierwave-qiniu', '~> 1.1.2'
+    gem 'carrierwave-qiniu', '~> 1.1.3'
     # If you need to use locales other than English
     gem 'carrierwave-i18n'
 
@@ -20,7 +20,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install carrierwave-qiniu -v 1.1.2
+    $ gem install carrierwave-qiniu -v 1.1.3
 
 ## Usage
 
@@ -28,16 +28,15 @@ You'll need to configure it in config/initializers/carrierwave.rb
 
 ```ruby
 ::CarrierWave.configure do |config|
-  config.storage             = :qiniu
-  config.qiniu_access_key    = "your qiniu access_key"
-  config.qiniu_secret_key    = 'your qiniu secret_key'
-  config.qiniu_bucket        = "carrierwave-qiniu-example"
-  config.qiniu_bucket_domain = "carrierwave-qiniu-example.aspxboy.com"
-  config.qiniu_bucket_private= true #default is false
-  config.qiniu_block_size    = 4*1024*1024
-  config.qiniu_protocol      = "http"
-
-  config.qiniu_up_host       = 'http://up.qiniug.com' #七牛上传海外服务器,国内使用可以不要这行配置
+  config.storage              = :qiniu
+  config.qiniu_access_key     = "your qiniu access_key"
+  config.qiniu_secret_key     = 'your qiniu secret_key'
+  config.qiniu_bucket         = "carrierwave-qiniu-example"
+  config.qiniu_bucket_domain  = "carrierwave-qiniu-example.aspxboy.com"
+  config.qiniu_bucket_private = true #default is false
+  config.qiniu_block_size     = 4*1024*1024
+  config.qiniu_protocol       = "http"
+  config.qiniu_up_host        = 'http://up.qiniug.com' #七牛上传海外服务器,国内使用可以不要这行配置
 end
 ```
 
@@ -60,6 +59,7 @@ class AvatarUploader < CarrierWave::Uploader::Base
   self.qiniu_bucket                = "avatars"
   self.qiniu_bucket_domain         = "avatars.files.example.com"
   self.qiniu_protocal              = 'http'
+  self.qiniu_delete_after_days     = 30
   self.qiniu_can_overwrite         = true
   self.qiniu_bucket_private        = true #default is false
   self.qiniu_callback_url          = "http://<ip1>/callback;http://<ip2>/callback"

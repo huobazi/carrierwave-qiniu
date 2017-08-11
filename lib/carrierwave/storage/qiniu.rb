@@ -26,7 +26,7 @@ module CarrierWave
           @qiniu_callback_url           = options[:qiniu_callback_url] || ''
           @qiniu_callback_body          = options[:qiniu_callback_body] || ''
           @qiniu_style_separator        = options[:qiniu_style_separator] || '-'
-          @qiniu_delete_after_days      = options[:qiniu_delete_after_days]
+          @qiniu_delete_after_days      = options[:qiniu_delete_after_days] || 0
           init
         end
 
@@ -204,7 +204,8 @@ module CarrierWave
                                     :qiniu_callback_body          => @uploader.qiniu_callback_body,
                                     :qiniu_persistent_notify_url  => @uploader.qiniu_persistent_notify_url,
                                     :qiniu_persistent_pipeline    => @uploader.qiniu_persistent_pipeline,
-                                    :qiniu_style_separator        => @uploader.qiniu_style_separator
+                                    :qiniu_style_separator        => @uploader.qiniu_style_separator,
+                                    :qiniu_delete_after_days      => @uploader.qiniu_delete_after_days
                                   }
 
                                   config[:qiniu_persistent_ops] = Array(@uploader.qiniu_persistent_ops || @uploader.qiniu_async_ops).join(';') rescue ''

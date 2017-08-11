@@ -4,7 +4,7 @@ require "carrierwave/storage/qiniu"
 require "carrierwave/qiniu/configuration"
 require "carrierwave/qiniu/style"
 require "carrierwave/uploader/base"
- require "carrierwave/qiniu/railtie" if defined?(Rails)
+require "carrierwave/qiniu/railtie" if defined?(Rails)
 
 ::CarrierWave.configure do |config|
   config.storage_engines[:qiniu] = "::CarrierWave::Storage::Qiniu".freeze

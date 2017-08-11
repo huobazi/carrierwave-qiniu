@@ -1,6 +1,12 @@
 
 ## CHANGE LOG
 
+### v1.1.3
+
+新增参数 qiniu_delete_after_days
+
+参考: https://developer.qiniu.com/kodo/api/1732/update-file-lifecycle
+
 ### v1.1.2
 
 Fix:
