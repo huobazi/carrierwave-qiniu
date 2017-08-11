@@ -1,6 +1,12 @@
 
 ## CHANGE LOG
 
+### v1.1.4
+
+- 支持带样式的私有链接
+
+https://github.com/huobazi/carrierwave-qiniu/pull/80
+
 ### v1.1.3
 
 新增参数 qiniu_delete_after_days
@@ -19,7 +25,7 @@ https://github.com/huobazi/carrierwave-qiniu/pull/78
 ### v1.1.0
 
 - Require carrierwave ~> 1.0
-- 
+ 
 https://github.com/huobazi/carrierwave-qiniu/pull/73
 
 ### v1.0.1
