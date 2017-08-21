@@ -23,6 +23,8 @@ module CarrierWave
         add_config :qiniu_style_separator
         add_config :qiniu_style_inline
         add_config :qiniu_styles
+        add_config :qiniu_persistent_pipeline
+        add_config :qiniu_delete_after_days
 
         alias_config :qiniu_protocal, :qiniu_protocol
 
