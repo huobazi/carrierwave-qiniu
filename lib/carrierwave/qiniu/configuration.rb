@@ -12,8 +12,9 @@ module CarrierWave
         add_config :qiniu_secret_key
         add_config :qiniu_block_size
         add_config :qiniu_protocol
-        add_config :qiniu_async_ops
+        add_config :qiniu_persistent_ops
         add_config :qiniu_persistent_notify_url
+        add_config :qiniu_persistent_pipeline
         add_config :qiniu_callback_url
         add_config :qiniu_callback_body
         add_config :qiniu_can_overwrite
@@ -23,10 +24,10 @@ module CarrierWave
         add_config :qiniu_style_separator
         add_config :qiniu_style_inline
         add_config :qiniu_styles
-        add_config :qiniu_persistent_pipeline
         add_config :qiniu_delete_after_days
 
         alias_config :qiniu_protocal, :qiniu_protocol
+        alias_config :qiniu_async_ops, :qiniu_persistent_ops
 
         reset_qiniu_config
       end
@@ -38,7 +39,9 @@ module CarrierWave
             config.qiniu_protocol = 'http'
             config.qiniu_bucket_private = false
             config.qiniu_block_size = 1024*1024*4
-            config.qiniu_async_ops = ''
+            config.qiniu_persistent_ops = ''
+            config.qiniu_persistent_notify_url = ''
+            config.qiniu_persistent_pipeline = ''
             config.qiniu_can_overwrite = false
             config.qiniu_private_url_expires_in = 3600
             config.qiniu_callback_url = ''
@@ -46,6 +49,7 @@ module CarrierWave
             config.qiniu_persistent_notify_url = ''
             config.qiniu_style_separator = '-'
             config.qiniu_style_inline = false
+            config.qiniu_delete_after_days = 0
           end
         end
 
