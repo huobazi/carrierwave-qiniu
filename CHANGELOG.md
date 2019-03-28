@@ -1,6 +1,12 @@
 
 ## CHANGE LOG
 
+### v1.1.6
+
+- Add filename to storage qiniu file
+
+https://github.com/huobazi/carrierwave-qiniu/pull/84
+
 ### v1.1.5
 
 - 解决未定义的 qiniu_delete_after_days 和 qiniu_persistent_pipeline 方法错误
