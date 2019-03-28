@@ -196,6 +196,10 @@ module CarrierWave
           path.split('.').last
         end
 
+        def filename
+          ::File.basename(path)
+        end
+
         private
 
         def qiniu_connection
