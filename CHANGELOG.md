@@ -1,6 +1,12 @@
 
 ## CHANGE LOG
 
+### v1.1.7
+
+- Upgrade to rails 6 and qiniu 6.9
+
+https://github.com/huobazi/carrierwave-qiniu/pull/85
+
 ### v1.1.6
 
 - Add filename to storage qiniu file
