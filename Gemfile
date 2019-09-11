@@ -5,11 +5,11 @@ source 'https://gems.ruby-china.com'
 gemspec
 
 group :test do
-  gem 'rails'
+  gem 'rails', '~> 6.0.0'
   gem 'sqlite3'
-  gem 'carrierwave'
+  gem 'carrierwave', '~> 1.3', '>= 1.3.1'
   gem 'mini_magick'
-  gem 'qiniu'
+  gem 'qiniu', '~> 6.9'
   gem 'rspec'
   gem 'mocha'
   gem 'dotenv'

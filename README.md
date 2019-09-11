@@ -1,6 +1,6 @@
 # Carrierwave::Qiniu
 
-[![Gem Version](https://badge.fury.io/rb/carrierwave-qiniu@2x.png?1.1.6)](http://badge.fury.io/rb/carrierwave-qiniu)
+[![Gem Version](https://badge.fury.io/rb/carrierwave-qiniu@2x.png?1.1.7)](http://badge.fury.io/rb/carrierwave-qiniu)
 
 This gem adds storage support for [Qiniu](http://qiniutek.com) to [Carrierwave](https://github.com/jnicklas/carrierwave)
 
@@ -10,7 +10,7 @@ example: https://github.com/huobazi/carrierwave-qiniu-example
 
 Add the following to your application's Gemfile:
 
-    gem 'carrierwave-qiniu', '~> 1.1.6'
+    gem 'carrierwave-qiniu', '~> 1.1.7'
     gem 'carrierwave-i18n' # If you need to use locales other than English
 
 And then execute:
@@ -19,7 +19,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install carrierwave-qiniu -v 1.1.6
+    $ gem install carrierwave-qiniu -v 1.1.7
 
 ## Usage
 
