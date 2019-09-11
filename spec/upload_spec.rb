@@ -20,14 +20,14 @@ describe "CarrierWave Qiniu" do
     end
   end
 
-require 'carrierwave/processing/mini_magick'
+  require 'carrierwave/processing/mini_magick'
   class PhotoUploader < CarrierWave::Uploader::Base
     include CarrierWave::MiniMagick
 
     self.qiniu_can_overwrite = true
 
     version :thumb do
-          process :resize_to_fill => [200, 200]
+      process :resize_to_fill => [200, 200]
     end
 
     def store_dir
@@ -85,10 +85,6 @@ require 'carrierwave/processing/mini_magick'
 
       f = load_file("mm.jpg")
       photo = WrongPhoto.new(:image => f)
-      # FIXME: also raise error, see: CarrierWave::Qiniu#store L54
-      photo.save
-      expect(photo).to_not be_valid
-
       expect {
         photo.save!
       }.to raise_error
@@ -136,21 +132,25 @@ require 'carrierwave/processing/mini_magick'
       open(photo2.image.url).should_not be_nil
     end
 
-    it 'file exists return true' do
-      f = load_file("mm.jpg")
-      photo = Photo.new(image: f)
-      photo.save
+    describe 'after remove' do
+      before(:each) do
+        f = load_file("mm.jpg")
+        @photo = Photo.new(image: f)
+        @photo.save
+        @photo.image.remove!
+      end
 
-      expect(photo.image.file.exists?).to eq(true)
-    end
+      it 'will be not cached' do
+        expect(@photo.image).not_to be_cached
+      end
 
-    it 'file exists return false' do
-      f = load_file("mm.jpg")
-      photo = Photo.new(image: f)
-      photo.save
-      photo.image.remove!
+      it 'file will be nil' do
+        expect(@photo.image.file).to be_nil
+      end
 
-      expect(photo.image.file.exists?).to eq(false)
+      it 'url will be nill' do
+        expect(@photo.image.url).to be_nil
+      end
     end
   end
 
