@@ -132,30 +132,24 @@ describe "CarrierWave Qiniu" do
       open(photo2.image.url).should_not be_nil
     end
 
-    it 'file exists return true' do
-      f = load_file("mm.jpg")
-      photo = Photo.new(image: f)
-      photo.save
-
-      expect(photo.image.file.exists?).to eq(true)
-    end
-
-    it 'file  was removed' do
-      f = load_file("mm.jpg")
-      photo = Photo.new(image: f)
-      photo.save
-      photo.image.remove!
+    describe 'after remove' do
+      before(:each) do
+        f = load_file("mm.jpg")
+        @photo = Photo.new(image: f)
+        @photo.save
+        @photo.image.remove!
+      end
 
       it 'will be not cached' do
-        expect(photo.image).not_to be_cached
+        expect(@photo.image).not_to be_cached
       end
 
       it 'file will be nil' do
-        expect(photo.image.file).to be_nil
+        expect(@photo.image.file).to be_nil
       end
 
       it 'url will be nill' do
-        expect(photo.image.url).to be_nil
+        expect(@photo.image.url).to be_nil
       end
     end
   end
