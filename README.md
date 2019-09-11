@@ -11,8 +11,7 @@ example: https://github.com/huobazi/carrierwave-qiniu-example
 Add the following to your application's Gemfile:
 
     gem 'carrierwave-qiniu', '~> 1.1.6'
-    # If you need to use locales other than English
-    gem 'carrierwave-i18n'
+    gem 'carrierwave-i18n' # If you need to use locales other than English
 
 And then execute:
 
