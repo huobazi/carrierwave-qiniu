@@ -148,7 +148,7 @@ describe "CarrierWave Qiniu" do
         expect(@photo.image.file).to be_nil
       end
 
-      it 'url will be nill' do
+      it 'url will be nil' do
         expect(@photo.image.url).to be_nil
       end
     end
