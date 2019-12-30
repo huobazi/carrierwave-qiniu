@@ -89,7 +89,7 @@ module CarrierWave
         end
 
         def download_url(path)
-          encode_path = URI.escape(path) #fix chinese file name, same as encodeURIComponent in js but preserve slash '/'
+          encode_path = path_escape(path)
           primitive_url = "#{@qiniu_protocol}://#{@qiniu_bucket_domain}/#{encode_path}"
           @qiniu_bucket_private ? \
             ::Qiniu::Auth.authorize_download_url(primitive_url, :expires_in => @qiniu_private_url_expires_in) \
@@ -117,6 +117,12 @@ module CarrierWave
 
           ::Qiniu.establish_connection! options
 
+        end
+
+        #fix chinese file name, same as encodeURIComponent in js but preserve slash '/'
+        def path_escape(value)
+          #CGI.escape(value)#.gsub("%2F", "/")
+          ::URI::DEFAULT_PARSER.escape value
         end
 
       end

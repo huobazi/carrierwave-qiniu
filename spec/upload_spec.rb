@@ -102,13 +102,13 @@ describe "CarrierWave Qiniu" do
       puts 'The image was uploaded to:'
       puts photo.image.url
 
-      open(photo.image.url).should_not be_nil
+      URI.open(photo.image.url).should_not be_nil
 
 
       puts "The thumb image:"
       puts photo.image.url(:thumb)
 
-      open(photo.image.thumb.url).should_not be_nil
+      URI.open(photo.image.thumb.url).should_not be_nil
 
     end
 
@@ -129,7 +129,7 @@ describe "CarrierWave Qiniu" do
 
       expect(photo2.image.url).not_to eq(photo.image.url)
 
-      open(photo2.image.url).should_not be_nil
+      URI.open(photo2.image.url).should_not be_nil
     end
 
     describe 'after remove' do
