@@ -1,6 +1,10 @@
 
 ## CHANGE LOG
 
+### v1.1.8
+
+- Fix warning in ruby 2.7.
+
 ### v1.1.7
 
 - Upgrade to rails 6 and qiniu 6.9
