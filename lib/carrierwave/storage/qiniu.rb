@@ -121,7 +121,6 @@ module CarrierWave
 
         #fix chinese file name, same as encodeURIComponent in js but preserve slash '/'
         def path_escape(value)
-          #CGI.escape(value)#.gsub("%2F", "/")
           ::URI::DEFAULT_PARSER.escape value
         end
 
