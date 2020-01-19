@@ -1,6 +1,10 @@
 
 ## CHANGE LOG
 
+### v1.2.1
+
+- Implement of cache* method for carrierwave 2.0
+
 ### v1.2.0
 
 - Fit to carrierwave 2.0 (支持 CarrierWave 2.0)

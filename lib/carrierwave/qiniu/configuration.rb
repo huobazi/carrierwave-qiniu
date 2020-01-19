@@ -50,6 +50,7 @@ module CarrierWave
             config.qiniu_style_separator = '-'
             config.qiniu_style_inline = false
             config.qiniu_delete_after_days = 0
+            config.cache_storage = :file
           end
         end
 

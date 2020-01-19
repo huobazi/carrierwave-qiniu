@@ -38,7 +38,6 @@ end
 # 或者在根目录下新建 `.env` 文件，包含 <key>=<value>
 ::CarrierWave.configure do |config|
   config.storage             = :qiniu
-  config.cache_storage       = :file
   config.qiniu_access_key    = ENV["qiniu_access_key"]
   config.qiniu_secret_key    = ENV["qiniu_secret_key"]
 

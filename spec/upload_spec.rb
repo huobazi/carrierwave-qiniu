@@ -103,7 +103,6 @@ describe "CarrierWave Qiniu" do
 
       URI.open(photo.image.url).should_not be_nil
 
-
       puts "The thumb image:"
       puts photo.image.url(:thumb)
 

@@ -93,6 +93,20 @@ module CarrierWave
           @qiniu_bucket_private ? ::Qiniu::Auth.authorize_download_url(primitive_url, :expires_in => @qiniu_private_url_expires_in) : primitive_url
         end
 
+        def clean_cache!(seconds)
+          code, result, response_headers, s, d = Qiniu::Storage.list(Qiniu::Storage::ListPolicy.new(
+              @qiniu_bucket,# 存储空间
+              1000,# 列举的条目数
+              '', # 指定前缀
+              ''# 指定目录分隔符
+          )).items.each do |file|
+            # generate_cache_id returns key formated TIMEINT-PID(-COUNTER)-RND
+            time = file.key.scan(/(\d+)-\d+-\d+(?:-\d+)?/).first.map { |t| t.to_i }
+            time = Time.at(*time)
+            delete(file.key) if time < (Time.now.utc - seconds)
+          end
+        end
+
         private
 
         def init
@@ -196,6 +210,10 @@ module CarrierWave
           ::File.basename(path)
         end
 
+        def clean_cache!(seconds)
+          qiniu_connection.clean_cache!(seconds)
+        end
+
         private
 
         def qiniu_connection
@@ -266,6 +284,18 @@ module CarrierWave
       def retrieve_from_cache!(identifier)
         ::CarrierWave::Storage::Qiniu::File.new(uploader, uploader.cache_path(identifier))
       end
+
+      ##
+      # Deletes a cache dir
+      #
+      def delete_dir!(path)
+        # do nothing, because there's no such things as 'empty directory'
+      end
+
+      def clean_cache!(seconds)
+        ::CarrierWave::Storage::Qiniu::File.new(uploader, nil).clean_cache!(seconds)
+      end
+
     end
   end
 end
