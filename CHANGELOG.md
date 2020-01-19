@@ -1,6 +1,10 @@
 
 ## CHANGE LOG
 
+### v1.2.0
+
+- Fit to carrierwave 2.0 (支持 CarrierWave 2.0)
+
 ### v1.1.8
 
 - Fix warning in ruby 2.7.

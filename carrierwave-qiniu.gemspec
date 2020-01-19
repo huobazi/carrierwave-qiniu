@@ -17,6 +17,6 @@ Gem::Specification.new do |gem|
   gem.version       = Carrierwave::Qiniu::VERSION
 
 
-  gem.add_dependency "carrierwave" , "~> 1.0"
+  gem.add_dependency "carrierwave" , ">= 1"
   gem.add_dependency "qiniu", "~> 6.9", ">= 6.9.0"
 end
