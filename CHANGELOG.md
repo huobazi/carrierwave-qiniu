@@ -1,6 +1,10 @@
 
 ## CHANGE LOG
 
+### v1.2.2
+
+- 重构
+
 ### v1.2.1
 
 - Implement of cache* method for carrierwave 2.0

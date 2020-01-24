@@ -6,7 +6,7 @@ namespace :carrierwave do
         options.merge!(key => CarrierWave::Uploader::Base.public_send(key))
       end
       # Config Qiniu establish_connection
-      CarrierWave::Storage::Qiniu::Connection.new(options)
+      CarrierWave::Qiniu::Connection.new(options)
 
       bucket = CarrierWave::Uploader::Base.qiniu_bucket
       styles = CarrierWave::Uploader::Base.qiniu_styles

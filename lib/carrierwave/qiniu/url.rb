@@ -25,17 +25,16 @@ module CarrierWave
           version = args.first.to_sym
           if styles.has_key? version
             options = args.last
-
             # Usage: avatar.url(:version, inline: true)
             url_options = if options.present? && options.is_a?(Hash) && options[:inline] && styles[version]
-                            { style: styles[version] }
+                            {style: styles[version]}
                           else
                             # global inline mode
                             if self.class.qiniu_style_inline && styles[version]
-                              { style: styles[version] }
+                              {style: styles[version]}
                             else
                               # Usage: avatar.url(:version)
-                              { version: version }
+                              {version: version}
                             end
                           end
             return file.url(url_options) if url_options
