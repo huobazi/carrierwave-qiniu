@@ -5,6 +5,7 @@
 .yardoc
 .env
 .env.*
+!.env.sample
 InstalledFiles
 _yardoc
 coverage
