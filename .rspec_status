@@ -1,0 +1,21 @@
+example_id                                | status | run_time        |
+----------------------------------------- | ------ | --------------- |
+./spec/carrierwave_qiniu_spec.rb[1:1]     | passed | 0.00122 seconds |
+./spec/carrierwave_qiniu_spec.rb[1:2:1]   | passed | 1.09 seconds    |
+./spec/carrierwave_qiniu_spec.rb[1:2:2]   | passed | 2.6 seconds     |
+./spec/carrierwave_qiniu_spec.rb[1:2:3]   | passed | 1.25 seconds    |
+./spec/carrierwave_qiniu_spec.rb[1:2:4]   | passed | 2.5 seconds     |
+./spec/carrierwave_qiniu_spec.rb[1:2:5]   | passed | 1.77 seconds    |
+./spec/carrierwave_qiniu_spec.rb[1:2:6:1] | passed | 0.51601 seconds |
+./spec/carrierwave_qiniu_spec.rb[1:2:6:2] | passed | 0.46774 seconds |
+./spec/carrierwave_qiniu_spec.rb[1:2:6:3] | passed | 0.45134 seconds |
+./spec/carrierwave_qiniu_spec.rb[1:3:1:1] | passed | 0.36893 seconds |
+./spec/carrierwave_qiniu_spec.rb[1:3:1:2] | passed | 0.40568 seconds |
+./spec/carrierwave_qiniu_spec.rb[1:3:2:1] | passed | 0.38115 seconds |
+./spec/carrierwave_qiniu_spec.rb[1:3:2:2] | passed | 0.38565 seconds |
+./spec/carrierwave_qiniu_spec.rb[1:3:2:3] | passed | 0.36964 seconds |
+./spec/carrierwave_qiniu_spec.rb[1:3:3:1] | passed | 0.41991 seconds |
+./spec/carrierwave_qiniu_spec.rb[1:3:4:1] | passed | 0.41857 seconds |
+./spec/carrierwave_qiniu_spec.rb[1:3:4:2] | passed | 0.37235 seconds |
+./spec/carrierwave_qiniu_spec.rb[1:3:4:3] | passed | 0.38322 seconds |
+./spec/carrierwave_qiniu_spec.rb[1:3:4:4] | passed | 0.37941 seconds |

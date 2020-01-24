@@ -1,6 +1,6 @@
 # Carrierwave::Qiniu
 
-[![Gem Version](https://badge.fury.io/rb/carrierwave-qiniu@2x.png?1.2.1)](http://badge.fury.io/rb/carrierwave-qiniu)
+[![Gem Version](https://badge.fury.io/rb/carrierwave-qiniu@2x.png?1.2.2)](http://badge.fury.io/rb/carrierwave-qiniu)
 
 This gem adds storage support for [Qiniu](http://qiniutek.com) to [Carrierwave](https://github.com/jnicklas/carrierwave)
 
@@ -10,7 +10,7 @@ example: https://github.com/huobazi/carrierwave-qiniu-example
 
 Add the following to your application's Gemfile:
 
-    gem 'carrierwave-qiniu', '~> 1.2.1'
+    gem 'carrierwave-qiniu', '~> 1.2.2'
     gem 'carrierwave-i18n' # If you need to use locales other than English
 
 And then execute:
@@ -19,7 +19,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install carrierwave-qiniu -v 1.2.1
+    $ gem install carrierwave-qiniu -v 1.2.2
 
 ## Usage
 
@@ -64,18 +64,42 @@ class AvatarUploader < CarrierWave::Uploader::Base
   self.qiniu_callback_url          = "http://<ip1>/callback;http://<ip2>/callback"
   self.qiniu_callback_body         = "key=$(key)&hash=$(etag)&w=$(imageInfo.width)&h=$(imageInfo.height)" # see http://developer.qiniu.com/docs/v6/api/overview/up/response/vars.html#magicvar
   self.qiniu_persistent_notify_url = "http://<ip>/notify"
-
-    # 指定预转数据处理命令
-    # https://developer.qiniu.com/kodo/manual/1206/put-policy#2
-    def qiniu_persistent_ops
-      commands = []
-
-      commands << "avthumb/mp4"
-      commands << "avthumb/m3u8/noDomain/1/segtime/15/vb/440k"
-
-      commands
-    end
-
+  
+  # 使用的队列名称,不设置代表不使用私有队列，使用公有队列
+  # 可以自己创建私有队列 see: https://portal.qiniu.com/dora/mps/new
+  self.qiniu_persistent_pipeline = "marble_persistent"
+    
+  # 指定预转数据处理命令,返回由每条命令组成的数组
+  # See
+  # https://developer.qiniu.com/dora/api/1291/persistent-data-processing-pfop#
+  # https://developer.qiniu.com/dora/api/3686/pfop-directions-for-use
+  # https://developer.qiniu.com/kodo/manual/1206/put-policy#persistentOps
+  def qiniu_persistent_ops
+    commands = []
+    
+    # 以预转持久化形式，将mp4视频转换为flv格式。
+    # https://developer.qiniu.com/dora/api/1248/audio-and-video-transcoding-avthumb
+    fops1 = "avthumb/flv"
+    saveas_key1 = ::Qiniu::Utils.urlsafe_base64_encode("#{self.qiniu_bucket}:#{store_dir}/#{self.filename}_flv.flv")
+    fops1 = fops1 + '|saveas/' + saveas_key1
+    commands << fops1
+    
+    # 以预转持久化形式，将mp4视频转换为avi格式。
+    # https://developer.qiniu.com/dora/api/1248/audio-and-video-transcoding-avthumb
+    fops2 = "avthumb/avi"
+    saveas_key2 = ::Qiniu::Utils.urlsafe_base64_encode("#{self.qiniu_bucket}:#{store_dir}/#{self.filename}_avi.avi")
+    fops2 = fops2 + '|saveas/' + saveas_key2
+    commands << fops2
+    
+    # 要进行视频截图操作。
+    # https://developer.qiniu.com/dora/api/1313/video-frame-thumbnails-vframe
+    fops3 = "vframe/jpg/offset/3/w/1280/h/720/rotate/auto"
+    saveas_key3 = ::Qiniu::Utils.urlsafe_base64_encode("#{self.qiniu_bucket}:#{store_dir}/#{self.filename}_screenshot.jpg")
+    fops3 = fops3 + '|saveas/' + saveas_key3
+    commands << fops3
+    
+    commands
+  end
 end
 ```
 
@@ -126,7 +150,6 @@ end
 
 class AvatarUploader < CarrierWave::Uploader::Base
   storage :qiniu
-
   use_qiniu_styles
 end
 
@@ -160,7 +183,11 @@ $ rake carrierwave:qiniu:sync_styles
 ```
 You can see a example project on: https://github.com/huobazi/carrierwave-qiniu-example
 
-or see the spec test on https://github.com/huobazi/carrierwave-qiniu/blob/master/spec/upload_spec.rb
+or see the spec test on https://github.com/huobazi/carrierwave-qiniu/blob/master/spec/carrierwave-qiniu_spec.rb
+
+## LICENSE
+
+See the [LICENSE](https://github.com/huobazi/carrierwave-qiniu/blob/master/LICENSE.txt).
 
 ## Contributing
 

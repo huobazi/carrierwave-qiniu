@@ -1,5 +1,4 @@
 # encoding: utf-8
-
 module CarrierWave
   module Qiniu
     module Configuration
@@ -38,7 +37,8 @@ module CarrierWave
           configure do |config|
             config.qiniu_protocol = 'http'
             config.qiniu_bucket_private = false
-            config.qiniu_block_size = 1024*1024*4
+            config.qiniu_block_size = 1024 * 1024 * 4
+            config.qiniu_async_ops = []
             config.qiniu_persistent_ops = ''
             config.qiniu_persistent_notify_url = ''
             config.qiniu_persistent_pipeline = ''
@@ -46,10 +46,11 @@ module CarrierWave
             config.qiniu_private_url_expires_in = 3600
             config.qiniu_callback_url = ''
             config.qiniu_callback_body = ''
-            config.qiniu_persistent_notify_url = ''
             config.qiniu_style_separator = '-'
             config.qiniu_style_inline = false
             config.qiniu_delete_after_days = 0
+
+            # 使用 version 和 七牛的持久化参数需要文件从本地上传,而不能在云端缓存
             config.cache_storage = :file
           end
         end
