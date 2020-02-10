@@ -8,13 +8,13 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{Qiniu Storage support for CarrierWave}
   spec.description   = %q{Qiniu Storage support for CarrierWave}
-  spec.homepage      = "https://github.com/huobazi/carrierwave-qiniu"
+  spec.homepage      = "https://huobazi.github.com/carrierwave-qiniu"
   spec.license       = "MIT"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
-  
+
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "https://github.com/huobazi/carrierwave-qiniu"
-  spec.metadata["changelog_uri"] = "https://github.com/huobazi/carrierwave-qiniu/blob/master/CHANGELOG.md.md"
+  spec.metadata["changelog_uri"] = "https://github.com/huobazi/carrierwave-qiniu/blob/master/CHANGELOG.md"
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
