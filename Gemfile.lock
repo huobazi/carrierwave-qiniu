@@ -110,7 +110,7 @@ GEM
     mocha (1.11.2)
     netrc (0.11.0)
     nio4r (2.5.2)
-    nokogiri (1.10.7)
+    nokogiri (1.10.8)
       mini_portile2 (~> 2.4.0)
     public_suffix (4.0.3)
     qiniu (6.9.0)
