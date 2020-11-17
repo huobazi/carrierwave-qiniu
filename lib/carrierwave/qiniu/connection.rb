@@ -99,6 +99,14 @@ module CarrierWave
         success
       end
 
+      def batch_delete(key)
+        success = ::Qiniu.batch_delete(
+            @qiniu_bucket,
+            key
+        )
+        success
+      end
+
       #
       # 获取文件信息
       # @param  key [String]
