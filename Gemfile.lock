@@ -117,7 +117,7 @@ GEM
     qiniu (6.9.0)
       mime-types (~> 3.1)
       rest-client (~> 2.0)
-    rack (2.2.3)
+    rack (2.2.3.1)
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
     rails (6.0.2.2)
