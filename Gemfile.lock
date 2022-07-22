@@ -178,7 +178,7 @@ GEM
     ssrf_filter (1.0.7)
     thor (1.0.1)
     thread_safe (0.3.6)
-    tzinfo (1.2.9)
+    tzinfo (1.2.10)
       thread_safe (~> 0.1)
     unf (0.1.4)
       unf_ext
